@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>People School Sujawal City Campus PSP</title>
+<meta name="description" content="Attendance and parent communication system - People School Sujawal City Campus PSP. Designed and developed by Shahwaiz Hassan Daheri.">
+<meta name="author" content="Shahwaiz Hassan Daheri">
+<meta name="theme-color" content="#0b5a47">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PSP Attendance">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --g1:#0b5a47; --g2:#063a2d; --g3:#12896d; --gold:#c9a24d; --gold-l:#f6edd6; --wa:#25D366; --wa-d:#1a9e4d;
+  --bg:#eef2f1; --card:#ffffff; --ink:#13241f; --mute:#5b726c; --line:#e1e9e6; --field:#ffffff; --soft:#e7f1ee; --ring:#e3ece9;
+  --ok:#1b9a55; --ok-l:#e3f5ea; --bad:#d23f31; --bad-l:#fdeceb; --warn:#b8730a; --warn-l:#fdf1dc;
+  --shadow:0 1px 2px rgba(6,58,45,.06),0 6px 18px rgba(6,58,45,.07);
+  --fs:16px;
+}
+:root[data-theme="dark"]{
+  --bg:#0c1412; --card:#15201d; --ink:#e8f1ee; --mute:#9db3ad; --line:#24332f; --field:#101a18; --soft:#1d2e2a; --ring:#24332f;
+  --ok-l:#14301f; --bad-l:#35191a; --warn-l:#33270f; --gold-l:#2e2712;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1412; --card:#15201d; --ink:#e8f1ee; --mute:#9db3ad; --line:#24332f; --field:#101a18; --soft:#1d2e2a; --ring:#24332f;
+    --ok-l:#14301f; --bad-l:#35191a; --warn-l:#33270f; --gold-l:#2e2712;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-big="1"]{--fs:18px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;font-size:var(--fs);line-height:1.4;-webkit-font-smoothing:antialiased}
+button{font-family:inherit}
+.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i.sm{width:16px;height:16px}.i.lg{width:28px;height:28px}
+.hide{display:none!important}
+
+/* splash */
+#splash{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:linear-gradient(165deg,var(--g1),var(--g2));color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;transition:opacity .5s,visibility .5s}
+#splash.out{opacity:0;visibility:hidden}
+#splash .crest{width:104px;height:104px;animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+#splash h2{margin:22px 0 4px;font-size:21px;line-height:1.25;max-width:320px}
+#splash p{margin:0;opacity:.75;font-size:14px}
+#splash .ld{margin-top:34px;width:120px;height:3px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
+#splash .ld i{display:block;height:100%;width:0;background:var(--gold);animation:ld 1.1s ease-out forwards}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
+@keyframes ld{to{width:100%}}
+
+/* header */
+.hdr{background:linear-gradient(135deg,var(--g2) 0%,var(--g1) 70%,#0e7258 100%);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 14px 13px;border-bottom:3px solid var(--gold)}
+.hdr .in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:11px}
+.hdr .crest{width:44px;height:44px;flex:none}
+.hdr h1{margin:0;font-size:15.5px;line-height:1.25;font-weight:700;letter-spacing:.1px}
+.hdr small{display:block;font-size:11.5px;opacity:.8;margin-top:2px;letter-spacing:.3px}
+.hdr .back{width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.who{margin-left:auto;display:flex;align-items:center;gap:9px;text-align:right;flex:none}
+.who b{display:block;font-size:13px;line-height:1.2;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.who small{display:block;font-size:11px;opacity:.85;margin:1px 0 0;color:#f3dfa6}
+.who button{width:38px;height:38px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.tabs{position:sticky;top:0;z-index:30;background:var(--g1);box-shadow:0 3px 8px rgba(5,50,40,.25)}
+.tabs .in{max-width:640px;margin:0 auto;display:flex}
+.tabs button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 8px 12px;border:0;background:none;color:rgba(255,255,255,.65);font-size:15px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+.tabs button.on{color:#fff;border-bottom-color:var(--gold)}
+
+main{flex:1;width:100%;max-width:640px;margin:0 auto;padding:14px 12px 96px}
+.card{background:var(--card);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.card h2{margin:0 0 10px;font-size:15.5px;color:var(--g1);display:flex;align-items:center;gap:8px;letter-spacing:.1px}
+:root[data-theme="dark"] .card h2{color:#7fd6bc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .card h2{color:#7fd6bc}}
+.notice{display:flex;gap:11px;background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px 13px;font-size:13.5px;color:var(--ink);margin-bottom:12px}
+.notice .ic{width:34px;height:34px;border-radius:50%;background:var(--g1);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.notice b{display:block;margin-bottom:1px;font-size:14px}
+.notice.gold{background:var(--gold-l);border-color:#e6d5a0}
+.notice.gold .ic{background:var(--gold);color:#3a2d08}
+
+/* landing */
+#landing{flex:1;display:flex;flex-direction:column}
+.hero{position:relative;overflow:hidden;background:linear-gradient(165deg,var(--g2) 0%,var(--g1) 60%,#0f7a5f 100%);color:#fff;text-align:center;padding:calc(34px + env(safe-area-inset-top)) 22px 64px;border-bottom:4px solid var(--gold)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.05)}
+.hero:before{width:260px;height:260px;right:-80px;top:-90px}
+.hero:after{width:200px;height:200px;left:-70px;bottom:-90px}
+.hero .crest{width:92px;height:92px;position:relative;filter:drop-shadow(0 6px 14px rgba(0,0,0,.25))}
+.hero h1{position:relative;margin:16px 0 4px;font-size:25px;line-height:1.2;letter-spacing:.2px}
+.hero .campus{position:relative;display:inline-block;margin:2px 0 10px;padding:3px 14px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:12.5px;letter-spacing:1.4px;text-transform:uppercase;color:#f3dfa6}
+.hero p{position:relative;margin:0 auto;max-width:330px;font-size:14px;opacity:.88}
+.lcards{max-width:520px;width:100%;margin:-38px auto 0;padding:0 14px 18px;position:relative}
+.rcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px 14px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;color:var(--ink);font-size:inherit}
+.rcard:active{transform:scale(.985)}
+.rcard .ric{width:48px;height:48px;border-radius:14px;background:var(--g1);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.rcard.pr .ric{background:linear-gradient(135deg,#c9a24d,#a8812f);color:#2d2206}
+.rcard.ad .ric{background:#1e6b8c}
+.rcard.vi .ric{background:#7a5aa6}
+.rcard b{display:block;font-size:16.5px}
+.rcard span{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
+.rcard .go{margin-left:auto;color:var(--mute)}
+.lnote{max-width:520px;margin:0 auto;padding:0 14px;text-align:center;font-size:12.5px;color:var(--mute)}
+
+/* auth */
+.authhead{text-align:center;margin:4px 0 8px}
+.authhead .big{width:62px;height:62px;border-radius:18px;background:var(--g1);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.authhead.pr .big{background:linear-gradient(135deg,#c9a24d,#a8812f);color:#2d2206}
+.authhead.ad .big{background:#1e6b8c}
+.authhead h2{justify-content:center;font-size:20px;margin:0 0 2px}
+.authhead p{margin:0;font-size:13px;color:var(--mute)}
+.pwrow{position:relative}
+.pwrow input{padding-right:46px}
+.pwrow button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;background:none;color:var(--mute);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.link{background:none;border:0;color:var(--g3);font-weight:700;font-size:14px;padding:12px 4px;cursor:pointer;width:100%;text-align:center}
+
+/* visitor */
+.vhero{text-align:center;padding:6px 4px 14px}
+.vhero .crest{width:72px;height:72px}
+.vhero h2{justify-content:center;font-size:19px;margin:10px 0 2px}
+.vhero p{margin:0;color:var(--mute);font-size:13px}
+.kv{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+.kv .kic{width:36px;height:36px;border-radius:11px;background:var(--soft);color:var(--g1);display:flex;align-items:center;justify-content:center;flex:none}
+.kv small{display:block;font-size:11.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.6px}
+.kv div{min-width:0;overflow-wrap:anywhere}
+.kv a{color:var(--g3);font-weight:600;text-decoration:none}
+
+/* date row */
+.dates{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.dates .nav{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--g1);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.dates input{flex:1;min-width:0;text-align:center;font-weight:600;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);border-radius:12px;height:42px;padding:0 10px;color:var(--ink);font-size:16px;-webkit-appearance:none;appearance:none}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mute);font-size:13.5px;font-weight:600;cursor:pointer}
+.chip.on{background:var(--g1);border-color:var(--g1);color:#fff}
+
+/* summary */
+.sum{display:flex;align-items:center;gap:14px}
+.ring{position:relative;width:84px;height:84px;flex:none}
+.ring svg{transform:rotate(-90deg);width:84px;height:84px}
+.ring .bg{stroke:var(--ring)}.ring .fg{stroke:var(--wa-d);stroke-linecap:round;transition:stroke-dashoffset .5s}
+.ring b{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:18px}
+.sum .tiles{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.tiles4{grid-template-columns:repeat(4,1fr)!important}
+.tile{border-radius:12px;padding:9px 4px;text-align:center;background:var(--soft)}
+.tile b{display:block;font-size:20px;line-height:1.1}.tile span{font-size:11.5px;color:var(--mute)}
+.tiles4 .tile b{font-size:18px}
+.tile.p{background:var(--ok-l)}.tile.p b{color:var(--ok)}
+.tile.a{background:var(--bad-l)}.tile.a b{color:var(--bad)}
+.tile.l{background:var(--warn-l)}.tile.l b{color:var(--warn)}
+
+/* inputs */
+label{display:block;font-size:12.5px;font-weight:600;color:var(--mute);margin:12px 0 5px}
+input,select,textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:12px;font:inherit;font-size:16px;background:var(--field);color:var(--ink);-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 20px) 55%,calc(100% - 15px) 55%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:36px}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--g3);box-shadow:0 0 0 3px rgba(18,137,109,.2)}
+button:focus-visible,a:focus-visible{outline:3px solid rgba(18,137,109,.5);outline-offset:2px}
+.search{position:relative;margin-bottom:6px}
+.search .i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mute)}
+.search input{padding-left:40px}
+.row{display:flex;gap:10px}.row>*{flex:1;min-width:0}
+.hint{font-size:12.5px;color:var(--mute);margin:7px 0 0}
+.hint.good{color:var(--ok)}.hint.err{color:var(--bad)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border:0;border-radius:13px;background:var(--g1);color:#fff;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .1s,background .2s}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.btn.full{width:100%;margin-top:14px}
+.btn.gold{background:linear-gradient(135deg,#d3ac55,#b88f35);color:#2b2005}
+.btn.sec{background:var(--soft);color:var(--g1)}
+:root[data-theme="dark"] .btn.sec{color:#7fd6bc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.sec{color:#7fd6bc}}
+.btn.out{background:transparent;color:var(--g1);border:1.5px solid var(--g1)}
+:root[data-theme="dark"] .btn.out{color:#7fd6bc;border-color:#7fd6bc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.out{color:#7fd6bc;border-color:#7fd6bc}}
+.btn.bad{background:var(--bad-l);color:var(--bad)}
+.btn.wa{background:var(--wa-d)}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px;gap:6px}
+.btn.xs{padding:7px 10px;font-size:12.5px;border-radius:9px;gap:5px}
+.btn.ico{padding:9px;border-radius:10px}
+.fab{position:fixed;right:16px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:40;height:56px;padding:0 20px 0 16px;border-radius:28px;border:0;background:var(--wa);color:#05352f;font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(6,58,45,.4);cursor:pointer}
+.fab:active{transform:scale(.96)}
+
+/* student rows */
+.stu{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}
+.stu:last-child{border-bottom:0;padding-bottom:2px}
+.av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex:none}
+.stu .info{flex:1;min-width:0}
+.stu .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stu .meta{font-size:12.5px;color:var(--mute);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:1px}
+.cls{background:var(--soft);color:var(--g1);font-weight:700;font-size:11.5px;border-radius:6px;padding:1px 7px}
+:root[data-theme="dark"] .cls{color:#7fd6bc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .cls{color:#7fd6bc}}
+.tog{display:flex;gap:6px;flex:none}
+.tog button{width:40px;height:40px;border-radius:50%;border:2px solid var(--line);background:var(--card);color:var(--mute);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;padding:0}
+.tog button:active{transform:scale(.9)}
+.tog .p.on{background:var(--ok);border-color:var(--ok);color:#fff;transform:scale(1.05)}
+.tog .a.on{background:var(--bad);border-color:var(--bad);color:#fff;transform:scale(1.05)}
+.tog .l.on{background:var(--warn);border-color:var(--warn);color:#fff;transform:scale(1.05)}
+.tog .i{width:20px;height:20px;stroke-width:2.6}
+.tag{font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+.tag.sent,.tag.ok{background:var(--ok-l);color:var(--ok)}.tag.pend{background:var(--warn-l);color:var(--warn)}
+.tag.ab,.tag.bl{background:var(--bad-l);color:var(--bad)}.tag.lv{background:var(--warn-l);color:var(--warn)}
+.tag.rl{background:var(--soft);color:var(--g1)}
+.tag.gd{background:var(--gold-l);color:#7a5c10}
+.by{font-size:11.5px;color:var(--mute)}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--mute)}
+.mask{letter-spacing:1px}
+.empty{text-align:center;color:var(--mute);padding:26px 10px;font-size:14px}
+.empty .i{width:38px;height:38px;color:var(--line);display:block;margin:0 auto 8px;stroke:var(--mute);opacity:.5}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--mute);margin:2px 0 4px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}.legend i{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+/* pending */
+.lock{text-align:center;padding:26px 16px 20px}
+.lock .big{width:68px;height:68px;border-radius:50%;background:var(--g1);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.lock h2{justify-content:center;font-size:19px;margin:0 0 2px}
+
+/* sub tabs */
+.sub{display:flex;gap:4px;background:var(--card);padding:4px;border-radius:15px;box-shadow:var(--shadow);margin-bottom:12px;border:1px solid var(--line)}
+.sub button{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border:0;border-radius:11px;background:none;color:var(--mute);font-size:11.5px;font-weight:600;cursor:pointer}
+.sub button.on{background:var(--g1);color:#fff}
+.sub.two button{flex-direction:row;justify-content:center;gap:8px;font-size:14px;padding:11px 4px}
+.subscroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.subscroll::-webkit-scrollbar{display:none}
+.subscroll button{min-width:66px;flex:none}
+
+/* report */
+.pbar{height:7px;border-radius:4px;background:var(--ring);overflow:hidden;margin-top:6px}
+.pbar i{display:block;height:100%;border-radius:4px}
+.pct{font-weight:800;font-size:15px;min-width:44px;text-align:right}
+.hi{color:var(--ok)}.mid{color:var(--warn)}.lo{color:var(--bad)}
+.bghi{background:var(--ok)}.bgmid{background:#e0a02a}.bglo{background:var(--bad)}
+
+/* settings */
+.setrow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.setrow:last-of-type{border-bottom:0}
+.setrow .tx{flex:1;min-width:0}.setrow .tx b{display:block;font-size:14.5px}.setrow .tx span{display:block;font-size:12.5px;color:var(--mute);margin-top:1px}
+.sw{position:relative;width:50px;height:30px;flex:none}
+.sw input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.sw i{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:15px;background:#b9c8c4;transition:background .2s}
+.sw i:after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.sw input:checked+i{background:var(--g3)}
+.sw input:checked+i:after{transform:translateX(20px)}
+.seg{display:flex;background:var(--soft);border-radius:12px;padding:3px;gap:3px}
+.seg button{flex:1;border:0;background:none;padding:9px 4px;border-radius:9px;color:var(--mute);font-size:13.5px;font-weight:600;cursor:pointer}
+.seg button.on{background:var(--g1);color:#fff;box-shadow:var(--shadow)}
+.logrow{padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.logrow:last-child{border-bottom:0}
+.logrow .t{font-size:11.5px;color:var(--mute);margin-bottom:2px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.crow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.crow:last-child{border-bottom:0}
+.crow .cn{flex:1;font-weight:600}
+.crow .cv{font-size:12.5px;color:var(--mute)}
+
+/* sheet */
+.sheetBg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(6,25,20,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:90}
+.sheetBg.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:640px;background:var(--card);border-radius:22px 22px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));z-index:100;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.9,.3,1);max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch}
+.sheet.open{transform:none}
+.sheet .grab{width:42px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.sheet .sh{display:flex;align-items:center;justify-content:space-between}
+.sheet h3{margin:0;font-size:18px;color:var(--g1)}
+.sheet .x{width:36px;height:36px;border-radius:50%;border:0;background:var(--soft);color:var(--mute);display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+footer{background:var(--g2);color:#cfe7e2;text-align:center;font-size:12.5px;padding:14px 12px calc(14px + env(safe-area-inset-bottom));border-top:3px solid var(--gold);line-height:1.5}
+footer b{color:#f3dfa6;font-weight:700}
+#toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:#10211f;color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:150;max-width:90%;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#crash{position:fixed;top:0;left:0;right:0;z-index:300;background:var(--bad);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;display:flex;align-items:center;gap:10px;font-size:13.5px}
+#crash button{margin-left:auto;border:0;border-radius:9px;padding:8px 12px;font-weight:700;background:#fff;color:var(--bad);cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><polyline points="9 14 11 16 15 12"/></symbol>
+  <symbol id="i-admin" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><circle cx="12" cy="10" r="2"/><path d="M8.5 15a4 4 0 0 1 7 0"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-useradd" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="i-set" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5l1-1.5-2-1-.8.8a3.5 3.5 0 0 1-1.6-1.6l.8-.8-1-2L9 9.5z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="i-checkall" viewBox="0 0 24 24"><polyline points="2 13 7 18 14 9"/><polyline points="11 16 13 18 22 7"/></symbol>
+  <symbol id="i-crest" viewBox="0 0 64 64"><path d="M32 4 56 13v18c0 15-10 25-24 29C18 56 8 46 8 31V13z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
+  <symbol id="i-staff" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="i-set" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+</svg>
+
+<!-- splash -->
+<div id="splash">
+  <svg class="crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M50 14 78 25v22c0 18-12 30-28 36C34 77 22 65 22 47V25z" fill="#0b5a47"/><path d="M37 47l10 10 18-20" fill="none" stroke="#c9a24d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <h2>People School Sujawal City Campus PSP</h2>
+  <p>Attendance Pro</p>
+  <div class="ld"><i></i></div>
+</div>
+
+<div id="crash" class="hide"><span>Something went wrong.</span><button onclick="location.reload()">Reload</button></div>
+
+<div class="hdr hide" id="hdr">
+  <div class="in">
+    <button class="back hide" id="backBtn" aria-label="Back" onclick="goLanding()"><svg class="i"><use href="#i-left"/></svg></button>
+    <svg class="crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M50 14 78 25v22c0 18-12 30-28 36C34 77 22 65 22 47V25z" fill="#0b5a47"/><path d="M37 47l10 10 18-20" fill="none" stroke="#c9a24d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <h1>People School Sujawal City Campus PSP</h1>
+      <small>ATTENDANCE PRO</small>
+    </div>
+    <div class="who hide" id="who">
+      <div><b id="whoName"></b><small id="whoRole"></small></div>
+      <button aria-label="Log out" onclick="doLogout()"><svg class="i"><use href="#i-out"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<nav class="tabs hide" id="tabs" role="tablist">
+  <div class="in">
+    <button id="tabT" class="on" role="tab" onclick="setTab('teacher')"><svg class="i"><use href="#i-clip"/></svg>Attendance</button>
+    <button id="tabA" role="tab" onclick="setTab('admin')"><svg class="i"><use href="#i-admin"/></svg><span id="tabALbl">Manage</span></button>
+  </div>
+</nav>
+
+<!-- ================= WELCOME ================= -->
+<section id="landing" class="hide">
+  <div class="hero">
+    <svg class="crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M50 14 78 25v22c0 18-12 30-28 36C34 77 22 65 22 47V25z" fill="#0b5a47"/><path d="M37 47l10 10 18-20" fill="none" stroke="#c9a24d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h1>People School Sujawal</h1>
+    <div class="campus">City Campus &middot; PSP</div>
+    <p>Attendance and parent communication system</p>
+  </div>
+  <div class="lcards">
+    <div class="notice hide" id="connNote"><div class="ic"><svg class="i"><use href="#i-info"/></svg></div><div><b>Could not connect</b>Check your internet, then tap Try again.<br><button class="btn sm" style="margin-top:8px" onclick="boot()">Try again</button></div></div>
+    <div class="notice gold hide" id="demoNote"><div class="ic"><svg class="i"><use href="#i-info"/></svg></div><div><b>Demo mode</b>Data is saved only on this phone. Connect Firebase to use many phones.</div></div>
+    <button class="rcard pr" onclick="enterRole('principal')"><div class="ric"><svg class="i lg"><use href="#i-shield"/></svg></div><div><b>Principal</b><span>Full control, all activity and settings</span></div><svg class="i go"><use href="#i-chev"/></svg></button>
+    <button class="rcard ad" onclick="enterRole('admin')"><div class="ric"><svg class="i lg"><use href="#i-admin"/></svg></div><div><b>Admin</b><span>Students, parent messages, staff attendance</span></div><svg class="i go"><use href="#i-chev"/></svg></button>
+    <button class="rcard" onclick="enterRole('teacher')"><div class="ric"><svg class="i lg"><use href="#i-clip"/></svg></div><div><b>Teacher</b><span>Mark student attendance</span></div><svg class="i go"><use href="#i-chev"/></svg></button>
+    <button class="rcard vi" onclick="enterVisitor()"><div class="ric"><svg class="i lg"><use href="#i-users"/></svg></div><div><b>Visitor</b><span>School information and notices</span></div><svg class="i go"><use href="#i-chev"/></svg></button>
+  </div>
+  <div class="lnote">Staff accounts are created by the Principal or Admin.</div>
+</section>
+
+<main id="mainBox" class="hide">
+  <!-- ================= LOGIN / ACTIVATE / SETUP ================= -->
+  <section id="authView" class="hide">
+    <div class="card authcard">
+      <div class="authhead" id="authHead">
+        <div class="big"><svg class="i lg"><use id="authIcon" href="#i-clip"/></svg></div>
+        <h2 id="authTitle">Teacher login</h2>
+        <p id="authSub"></p>
+      </div>
+
+      <div id="fNone" class="hide"><div class="empty"><svg class="i"><use href="#i-lock"/></svg>The school is not set up yet.<br>The Principal must set it up first.</div></div>
+
+      <div id="fLogin">
+        <label for="lUser">Username</label>
+        <input id="lUser" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Your username">
+        <label for="lPass">Password</label>
+        <div class="pwrow"><input id="lPass" type="password" autocomplete="current-password" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()"><button type="button" aria-label="Show password" onclick="togglePw('lPass',this)"><svg class="i"><use href="#i-eye"/></svg></button></div>
+        <button class="btn full" id="lBtn" onclick="doLogin()"><svg class="i"><use href="#i-lock"/></svg><span id="lBtnTxt">Log in</span></button>
+        <button class="link" id="toAct" onclick="authMode('act')">First time here? Request access</button>
+      </div>
+
+      <div id="fAct" class="hide">
+        <p class="hint" style="margin:0 0 4px">Use the username the Principal or Admin created for you. Choose your own password. You can enter after they approve you.</p>
+        <label for="aUser">Username given by school</label>
+        <input id="aUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. ali.raza">
+        <label for="aPass">Choose a password (6+ characters)</label>
+        <input id="aPass" type="password" autocomplete="new-password">
+        <label for="aPass2">Repeat password</label>
+        <input id="aPass2" type="password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doActivate()">
+        <button class="btn full" id="aBtn" onclick="doActivate()"><svg class="i"><use href="#i-useradd"/></svg>Request access</button>
+        <button class="link" onclick="authMode('login')">I already have an account. Log in</button>
+      </div>
+
+      <div id="fSetup" class="hide">
+        <p class="hint" style="margin:0 0 4px">First time setup. Create the Principal account. The Principal then adds Admins and Teachers.</p>
+        <label for="sName">Principal name</label>
+        <input id="sName" placeholder="e.g. Sir Ahmed">
+        <label for="sUser">Username</label>
+        <input id="sUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. principal">
+        <label for="sPass">Password (6+ characters)</label>
+        <input id="sPass" type="password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSetup()">
+        <button class="btn gold full" id="sBtn" onclick="doSetup()"><svg class="i"><use href="#i-check"/></svg>Create Principal account</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= VISITOR ================= -->
+  <section id="visitorView" class="hide">
+    <div class="card">
+      <div class="vhero">
+        <svg class="crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M50 14 78 25v22c0 18-12 30-28 36C34 77 22 65 22 47V25z" fill="#0b5a47"/><path d="M37 47l10 10 18-20" fill="none" stroke="#c9a24d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h2>People School Sujawal</h2>
+        <p>City Campus &middot; PSP</p>
+      </div>
+      <div class="notice gold hide" id="vNotice"><div class="ic"><svg class="i"><use href="#i-bell"/></svg></div><div><b>Notice</b><span id="vNoticeTxt"></span></div></div>
+      <div id="vInfo"></div>
+    </div>
+    <div class="card">
+      <h2><svg class="i"><use href="#i-info"/></svg>For parents</h2>
+      <p class="hint" style="margin:0">If your child is absent or on leave, the school informs you on WhatsApp the same day. Please keep your number updated with the school office.</p>
+    </div>
+    <button class="btn out full" onclick="goLanding()"><svg class="i"><use href="#i-lock"/></svg>Staff login</button>
+  </section>
+
+  <!-- ================= WAITING ================= -->
+  <section id="pendView" class="hide">
+    <div class="card lock">
+      <div class="big"><svg class="i lg"><use href="#i-lock"/></svg></div>
+      <h2 id="pendTitle">Waiting for approval</h2>
+      <p class="hint" id="pendTxt" style="margin:6px 0 16px"></p>
+      <button class="btn out full" onclick="doLogout()"><svg class="i"><use href="#i-out"/></svg>Log out</button>
+    </div>
+  </section>
+
+  <!-- ================= ATTENDANCE ================= -->
+  <section id="teacher" class="hide">
+    <div class="notice">
+      <div class="ic"><svg class="i"><use href="#i-shield"/></svg></div>
+      <div><b>Mark Present, Absent or Leave.</b>
+      Your name is saved with every mark. Parent numbers are never shown to teachers.</div>
+    </div>
+    <div class="dates">
+      <button class="nav" aria-label="Previous day" onclick="shiftDate('tDate',-1)"><svg class="i"><use href="#i-left"/></svg></button>
+      <input type="date" id="tDate" onchange="renderTeacher()">
+      <button class="nav" aria-label="Next day" onclick="shiftDate('tDate',1)"><svg class="i"><use href="#i-right"/></svg></button>
+    </div>
+    <div class="chips" id="tChips"></div>
+    <div class="card">
+      <div class="sum">
+        <div class="ring">
+          <svg viewBox="0 0 84 84"><circle class="bg" cx="42" cy="42" r="34" fill="none" stroke-width="9"/><circle class="fg" id="ringFg" cx="42" cy="42" r="34" fill="none" stroke-width="9" stroke-dasharray="213.6" stroke-dashoffset="213.6"/></svg>
+          <b id="ringTxt">0%</b>
+        </div>
+        <div class="tiles tiles4" id="tStats"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="search"><svg class="i"><use href="#i-search"/></svg><input id="tSearch" placeholder="Search student" oninput="renderTeacher()"></div>
+      <div class="row" style="align-items:center;margin:4px 0 2px">
+        <div class="legend"><span><i style="background:var(--ok)"></i>Present</span><span><i style="background:var(--bad)"></i>Absent</span><span><i style="background:var(--warn)"></i>Leave</span></div>
+        <button class="btn sec sm" style="flex:none" onclick="markAll()"><svg class="i sm"><use href="#i-checkall"/></svg>All present</button>
+      </div>
+      <div id="tList"></div>
+    </div>
+  </section>
+
+  <!-- ================= MANAGE ================= -->
+  <section id="admin" class="hide">
+    <div class="sub subscroll" id="subBar">
+      <button id="sHome" class="on" onclick="subTab('home')"><svg class="i"><use href="#i-home"/></svg>Home</button>
+      <button id="sMsg" onclick="subTab('msg')"><svg class="i"><use href="#i-wa"/></svg>Messages</button>
+      <button id="sStu" onclick="subTab('stu')"><svg class="i"><use href="#i-users"/></svg>Students</button>
+      <button id="sStaff" onclick="subTab('staff')"><svg class="i"><use href="#i-staff"/></svg>Staff</button>
+      <button id="sSAtt" onclick="subTab('satt')"><svg class="i"><use href="#i-clip"/></svg>Staff Att.</button>
+      <button id="sRep" onclick="subTab('rep')"><svg class="i"><use href="#i-chart"/></svg>Report</button>
+      <button id="sSet" onclick="subTab('set')"><svg class="i"><use href="#i-set"/></svg>Settings</button>
+      <button id="sLog" class="hide" onclick="subTab('log')"><svg class="i"><use href="#i-log"/></svg>Activity</button>
+    </div>
+
+    <!-- home / dashboard -->
+    <div id="vHome">
+      <div class="card">
+        <h2 id="hGreet"></h2>
+        <div class="hint" style="margin:0 0 10px" id="hDate"></div>
+        <div class="tiles tiles4" id="hStats"></div>
+      </div>
+      <div class="notice gold hide" id="hApprove"><div class="ic"><svg class="i"><use href="#i-clock"/></svg></div><div><b id="hApproveTxt"></b><button class="btn sm" style="margin-top:8px" onclick="subTab('staff')">Review now</button></div></div>
+      <div class="card"><h2><svg class="i"><use href="#i-clip"/></svg>Classes today</h2><div id="hClasses"></div></div>
+      <div class="card"><h2><svg class="i"><use href="#i-wa"/></svg>Parents</h2><div id="hParents"></div><button class="btn sec full" onclick="subTab('msg')">Open messages</button></div>
+      <div class="card"><h2><svg class="i"><use href="#i-staff"/></svg>Staff today</h2><div class="tiles" id="hStaff"></div></div>
+      <div class="card hide" id="hRecentCard"><h2><svg class="i"><use href="#i-log"/></svg>Latest activity</h2><div id="hRecent"></div><button class="btn sec full" onclick="subTab('log')">See all activity</button></div>
+    </div>
+
+    <!-- messages -->
+    <div id="vMsg" class="hide">
+      <div class="dates">
+        <button class="nav" aria-label="Previous day" onclick="shiftDate('aDate',-1)"><svg class="i"><use href="#i-left"/></svg></button>
+        <input type="date" id="aDate" onchange="renderMsgs()">
+        <button class="nav" aria-label="Next day" onclick="shiftDate('aDate',1)"><svg class="i"><use href="#i-right"/></svg></button>
+      </div>
+      <div class="chips" id="aChips"></div>
+      <div class="card"><div class="tiles tiles4" id="aStats"></div></div>
+      <div class="card">
+        <h2><svg class="i"><use href="#i-wa"/></svg>Inform all parents</h2>
+        <p class="hint" style="margin:0 0 4px">One tap opens WhatsApp for the next parent with the message ready (absent or leave). Press send, come back, tap again.</p>
+        <button class="btn wa full" id="nextBtn" onclick="sendNext()"><svg class="i"><use href="#i-wa"/></svg><span id="nextTxt">Send next</span></button>
+        <button class="btn out full" onclick="copyGroup()"><svg class="i"><use href="#i-copy"/></svg>Copy one message for parents group</button>
+      </div>
+      <div class="card"><h2><svg class="i"><use href="#i-users"/></svg>Absent and on leave</h2><div id="aList"></div></div>
+    </div>
+
+    <!-- students -->
+    <div id="vStu" class="hide">
+      <div class="card">
+        <h2><svg class="i"><use href="#i-users"/></svg>All students <span id="stuCount" style="color:var(--mute);font-weight:500"></span></h2>
+        <div class="search"><svg class="i"><use href="#i-search"/></svg><input id="sSearch" placeholder="Search name or class" oninput="renderStudents()"></div>
+        <p class="hint" style="margin:0 0 8px" id="stuHint"></p>
+        <button class="btn out full" style="margin:0 0 6px" id="numBtn" onclick="toggleNumbers()"><svg class="i"><use href="#i-eye"/></svg><span id="numBtnTxt">Show all numbers</span></button>
+        <div id="sList"></div>
+        <button class="btn full" onclick="openSheet()"><svg class="i"><use href="#i-useradd"/></svg>Add student</button>
+      </div>
+    </div>
+
+    <!-- staff -->
+    <div id="vStaff" class="hide">
+      <div class="card hide" id="pendCard"><h2><svg class="i"><use href="#i-clock"/></svg>Waiting for approval</h2><div id="pendList"></div></div>
+      <div class="card">
+        <h2><svg class="i"><use href="#i-useradd"/></svg>Create staff username</h2>
+        <p class="hint" style="margin:0 0 2px">Give this username to the staff member. On their own phone they choose Teacher or Admin, tap "First time here", set a password, and you approve them here.</p>
+        <label for="nName">Full name</label>
+        <input id="nName" placeholder="e.g. Ali Raza">
+        <div class="row">
+          <div><label for="nUser">Username</label><input id="nUser" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="e.g. ali.raza"></div>
+          <div id="nRoleBox"><label for="nRole">Role</label><select id="nRole"><option value="teacher">Teacher</option></select></div>
+        </div>
+        <button class="btn full" onclick="createInvite()"><svg class="i"><use href="#i-check"/></svg>Create username</button>
+      </div>
+      <div class="card"><h2><svg class="i"><use href="#i-staff"/></svg>All staff</h2><div id="staffList"></div></div>
+    </div>
+
+    <!-- staff attendance -->
+    <div id="vSAtt" class="hide">
+      <div class="card">
+        <h2><svg class="i"><use href="#i-clip"/></svg>Staff attendance</h2>
+        <div class="dates">
+          <button class="nav" aria-label="Previous day" onclick="shiftDate('stDate',-1)"><svg class="i"><use href="#i-left"/></svg></button>
+          <input type="date" id="stDate" onchange="renderStaffAtt()">
+          <button class="nav" aria-label="Next day" onclick="shiftDate('stDate',1)"><svg class="i"><use href="#i-right"/></svg></button>
+        </div>
+        <div id="stAtt"></div>
+      </div>
+    </div>
+
+    <!-- report -->
+    <div id="vRep" class="hide">
+      <div class="card">
+        <h2><svg class="i"><use href="#i-chart"/></svg>Monthly report</h2>
+        <input type="month" id="rMonth" onchange="renderReport()" style="margin-bottom:10px">
+        <div class="chips" id="rChips" style="padding-bottom:4px"></div>
+        <div id="rList"></div>
+        <button class="btn out full" onclick="exportCSV()"><svg class="i"><use href="#i-down"/></svg>Download report (CSV)</button>
+      </div>
+    </div>
+
+    <!-- settings -->
+    <div id="vSet" class="hide">
+      <div class="card">
+        <h2><svg class="i"><use href="#i-set"/></svg>Appearance</h2>
+        <label style="margin-top:2px">Theme</label>
+        <div class="seg" id="themeSeg">
+          <button data-v="auto" onclick="setTheme('auto')">Auto</button><button data-v="light" onclick="setTheme('light')">Light</button><button data-v="dark" onclick="setTheme('dark')">Dark</button>
+        </div>
+        <div class="setrow" style="margin-top:8px"><div class="tx"><b>Large text</b><span>Easier to read on small screens</span></div><label class="sw"><input type="checkbox" id="bigTxt" onchange="setBig(this.checked)"><i></i></label></div>
+      </div>
+
+      <div class="card" id="numCard">
+        <h2><svg class="i"><use href="#i-eye"/></svg>Parent numbers</h2>
+        <p class="hint" style="margin:0 0 4px" id="numState"></p>
+        <button class="btn full" id="numBtn2" onclick="toggleNumbers()"><svg class="i"><use href="#i-eye"/></svg><span id="numBtn2Txt">Show all numbers</span></button>
+        <label for="hideMin">Hide numbers again after</label>
+        <select id="hideMin" onchange="saveHideMin()"><option value="1">1 minute</option><option value="5">5 minutes</option><option value="10">10 minutes</option><option value="30">30 minutes</option></select>
+        <p class="hint">Numbers also hide when you log out. The Principal can see every time numbers are shown.</p>
+      </div>
+
+      <div class="card" id="tplCard">
+        <h2><svg class="i"><use href="#i-wa"/></svg>Parent messages</h2>
+        <label for="tplA">Absent message</label>
+        <textarea id="tplA"></textarea>
+        <label for="tplL">Leave message</label>
+        <textarea id="tplL"></textarea>
+        <p class="hint">Use {name}, {class}, {date} and {by} (the sender's name).</p>
+        <button class="btn full" onclick="saveTpl()">Save messages</button>
+      </div>
+
+      <div id="prinSet" class="hide">
+        <div class="card">
+          <h2 style="color:#a8812f"><svg class="i"><use href="#i-shield"/></svg>Principal controls</h2>
+          <p class="hint" style="margin:0 0 4px">Only the Principal can change these.</p>
+          <div class="setrow"><div class="tx"><b>Admins can view parent numbers</b><span>Off: admins can still send messages but numbers stay hidden</span></div><label class="sw"><input type="checkbox" id="pReveal" onchange="savePerm('p_adminReveal',this.checked)"><i></i></label></div>
+          <div class="setrow"><div class="tx"><b>Admins can approve teachers</b><span>Off: only you approve new staff</span></div><label class="sw"><input type="checkbox" id="pApprove" onchange="savePerm('p_adminApprove',this.checked)"><i></i></label></div>
+          <div class="setrow"><div class="tx"><b>Teachers can add students</b><span>Off: only you and admins add students</span></div><label class="sw"><input type="checkbox" id="pTeacherAdd" onchange="savePerm('p_teacherAdd',this.checked)"><i></i></label></div>
+        </div>
+        <div class="card">
+          <h2 style="color:#a8812f"><svg class="i"><use href="#i-pin"/></svg>School profile (Visitor page)</h2>
+          <label for="pAbout">About the school</label><textarea id="pAbout" style="min-height:80px"></textarea>
+          <label for="pAddr">Address</label><input id="pAddr" placeholder="School address">
+          <div class="row"><div><label for="pPhone">Phone / WhatsApp</label><input id="pPhone" type="tel" placeholder="03XX XXXXXXX"></div><div><label for="pTime">School timing</label><input id="pTime" placeholder="8:00 AM - 1:30 PM"></div></div>
+          <label for="pNotice">Notice for visitors</label><textarea id="pNotice" style="min-height:70px" placeholder="e.g. School closed on Monday"></textarea>
+          <button class="btn gold full" onclick="savePublic()">Save school profile</button>
+        </div>
+        <div class="card">
+          <h2 style="color:#a8812f"><svg class="i"><use href="#i-down"/></svg>Data</h2>
+          <button class="btn out full" style="margin-top:4px" onclick="exportStudents()"><svg class="i"><use href="#i-down"/></svg>Download student list (with numbers)</button>
+          <p class="hint">Keep this file private. The download is recorded in Activity.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><svg class="i"><use href="#i-lock"/></svg>My account</h2>
+        <div class="crow"><div class="cn" id="myName"></div><span class="tag rl" id="myRole"></span></div>
+        <label for="cpOld">Current password</label>
+        <input id="cpOld" type="password" autocomplete="current-password">
+        <label for="cpNew">New password (6+ characters)</label>
+        <input id="cpNew" type="password" autocomplete="new-password">
+        <label for="cpNew2">Repeat new password</label>
+        <input id="cpNew2" type="password" autocomplete="new-password">
+        <button class="btn full" onclick="changePass()"><svg class="i"><use href="#i-check"/></svg>Save password</button>
+        <button class="btn bad full" onclick="doLogout()"><svg class="i"><use href="#i-out"/></svg>Log out</button>
+      </div>
+
+      <div class="card">
+        <h2><svg class="i"><use href="#i-info"/></svg>About</h2>
+        <p class="hint" style="margin:0">People School Sujawal City Campus PSP<br>Attendance Pro, version 2<br>Designed and developed by Shahwaiz Hassan Daheri</p>
+      </div>
+    </div>
+
+    <!-- activity (principal) -->
+    <div id="vLog" class="hide">
+      <div class="card">
+        <h2><svg class="i"><use href="#i-log"/></svg>Everything that happened</h2>
+        <div class="search"><svg class="i"><use href="#i-search"/></svg><input id="lSearch" placeholder="Search a name or action" oninput="renderLog()"></div>
+        <select id="lRole" onchange="renderLog()" style="margin-bottom:8px"><option value="">Everyone</option><option value="principal">Principal</option><option value="admin">Admins</option><option value="teacher">Teachers</option></select>
+        <div id="lList"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<button class="fab hide" id="fab" onclick="openSheet()"><svg class="i"><use href="#i-useradd"/></svg>Add student</button>
+
+<footer>Designed and developed by <b>Shahwaiz Hassan Daheri</b><br>for People School Sujawal City Campus PSP</footer>
+
+<!-- add / edit sheet -->
+<div class="sheetBg" id="sheetBg" onclick="closeSheet()"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+  <div class="grab"></div>
+  <div class="sh"><h3 id="shTitle">Add student</h3><button class="x" onclick="closeSheet()" aria-label="Close"><svg class="i"><use href="#i-x"/></svg></button></div>
+  <label for="fName">Student name</label>
+  <input id="fName" placeholder="e.g. Ayesha Khan" autocomplete="off">
+  <div class="row">
+    <div><label for="fClass">Class</label><input id="fClass" placeholder="e.g. 6-A" autocomplete="off"></div>
+    <div><label for="fPhone">Parent WhatsApp no.</label><input id="fPhone" type="tel" inputmode="numeric" placeholder="03XX XXXXXXX" autocomplete="off"></div>
+  </div>
+  <p class="hint" id="fHint">Numbers starting with 0 are saved as 92 automatically.</p>
+  <button class="btn full" id="fSave" onclick="saveStudent()"><svg class="i"><use href="#i-check"/></svg><span id="fSaveTxt">Add student</span></button>
+</div>
+
+<div id="toast" role="status"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   SETUP: paste your Firebase web-app config here (see SETUP.txt).
+   While this is null the app runs in DEMO mode (one phone only).
+   Example:
+   const FIREBASE_CONFIG = {apiKey:"...",authDomain:"...",projectId:"...",appId:"..."};
+   ===================================================================== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDb3WyREzDj71JANvl3CFxR0Vy9J3wfRUU",
+  authDomain: "people-school-sujawal-city.firebaseapp.com",
+  projectId: "people-school-sujawal-city",
+  storageBucket: "people-school-sujawal-city.firebasestorage.app",
+  messagingSenderId: "373336143790",
+  appId: "1:373336143790:web:28dd7238c85a703f157a3f"
+};
+
+/* safe storage (iPhone private mode can block localStorage) */
+const store={
+  get(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,v); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const DEL = {__del:true};            /* "delete this field" marker */
+const USER_DOMAIN = "@psp-school.app";  /* usernames become fake emails for Firebase login */
+
+/* ---------- DEMO backend: everything in this phone's localStorage ---------- */
+function LocalBackend(){
+  const K="PSP_V2_DATA", KA="PSP_V2_AUTH", KS="PSP_V2_SESSION";
+  const read=(k,d)=>{ try{ return JSON.parse(store.get(k))||d; }catch(e){ return d; } };
+  let data=read(K,{}), creds=read(KA,{}), session=store.get(KS)||null;
+  const subs=new Set(), authCbs=new Set();
+  const clone=o=>o===undefined?undefined:JSON.parse(JSON.stringify(o));
+  const persist=()=>store.set(K,JSON.stringify(data));
+  const split=p=>{ const i=p.indexOf("/"); return [p.slice(0,i),p.slice(i+1)]; };
+  const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+  function strip(o){ if(o&&typeof o==="object"&&!Array.isArray(o)){ const r={}; for(const k in o){ if(o[k]&&o[k].__del) continue; r[k]=strip(o[k]); } return r; } return o; }
+  function mergeInto(t,s){
+    for(const k in s){ const v=s[k];
+      if(v&&v.__del) delete t[k];
+      else if(v&&typeof v==="object"&&!Array.isArray(v)){ if(!t[k]||typeof t[k]!=="object") t[k]={}; mergeInto(t[k],v); }
+      else t[k]=v; }
+  }
+  const fire=()=>setTimeout(()=>subs.forEach(f=>f()),0);
+  const fireAuth=()=>authCbs.forEach(f=>f(session?{uid:session}:null));
+  function rows(col,opts){
+    let a=Object.keys(data[col]||{}).map(id=>Object.assign({id},clone(data[col][id])));
+    (opts.where||[]).forEach(([f,op,v])=>{ a=a.filter(x=>op===">="?x[f]>=v:op==="<="?x[f]<=v:x[f]===v); });
+    if(opts.order) a.sort((x,y)=>(x[opts.order]>y[opts.order]?1:-1)*(opts.desc?-1:1));
+    if(opts.limit) a=a.slice(0,opts.limit);
+    return a;
+  }
+  return {
+    mode:"local",
+    newId:()=>nid(),
+    getDoc:async p=>{ const [c,id]=split(p); const d=(data[c]||{})[id]; return d?Object.assign({id},clone(d)):null; },
+    listenDoc(p,cb){ const [c,id]=split(p); let on=true, last; const f=()=>{ if(!on) return; const d=(data[c]||{})[id], j=JSON.stringify(d===undefined?null:d); if(j===last) return; last=j; cb(d?Object.assign({id},clone(d)):null); }; subs.add(f); setTimeout(f,0); return ()=>{ on=false; subs.delete(f); }; },
+    listenCol(col,cb,opts){ opts=opts||{}; let on=true, last; const f=()=>{ if(!on) return; const r=rows(col,opts), j=JSON.stringify(r); if(j===last) return; last=j; cb(r); }; subs.add(f); setTimeout(f,0); return ()=>{ on=false; subs.delete(f); }; },
+    async set(p,obj,merge){
+      const [c,id]=split(p); data[c]=data[c]||{};
+      if(merge&&data[c][id]) mergeInto(data[c][id],clone(obj)); else data[c][id]=strip(clone(obj));
+      persist(); fire();
+    },
+    async del(p){ const [c,id]=split(p); if(data[c]) delete data[c][id]; persist(); fire(); },
+    onAuth(cb){ authCbs.add(cb); setTimeout(()=>{ if(authCbs.has(cb)) cb(session?{uid:session}:null); },0); return ()=>authCbs.delete(cb); },
+    async signUp(u,p){
+      if(creds[u]) throw {code:"auth/email-already-in-use"};
+      creds[u]={pw:p}; store.set(KA,JSON.stringify(creds));
+      session=u; store.set(KS,u); fireAuth(); return {uid:u};
+    },
+    async signIn(u,p){
+      if(!creds[u]||creds[u].pw!==p) throw {code:"auth/invalid-credential"};
+      session=u; store.set(KS,u); fireAuth(); return {uid:u};
+    },
+    async signOut(){ session=null; store.del(KS); fireAuth(); },
+    async changePassword(old,nw){
+      if(!session||!creds[session]||creds[session].pw!==old) throw {code:"auth/wrong-password"};
+      creds[session].pw=nw; store.set(KA,JSON.stringify(creds));
+    },
+    async deleteSelf(){ if(session){ delete creds[session]; store.set(KA,JSON.stringify(creds)); } await this.signOut(); }
+  };
+}
+
+/* ---------- CLOUD backend: Firebase (all phones share one database) ---------- */
+function loadScript(src){
+  return new Promise((res,rej)=>{ const s=document.createElement("script"); s.src=src; s.onload=res; s.onerror=()=>rej(new Error("load "+src)); document.head.appendChild(s); });
+}
+async function CloudBackend(cfg){
+  const V="10.12.2", base="https://www.gstatic.com/firebasejs/"+V+"/";
+  await loadScript(base+"firebase-app-compat.js");
+  await Promise.all([loadScript(base+"firebase-auth-compat.js"),loadScript(base+"firebase-firestore-compat.js")]);
+  firebase.initializeApp(cfg);
+  const auth=firebase.auth(), fs=firebase.firestore(), FV=firebase.firestore.FieldValue;
+  try{ await fs.enablePersistence({synchronizeTabs:true}); }catch(e){ try{ await fs.enablePersistence(); }catch(_){} }
+  const conv=o=>{ if(o&&o.__del) return FV.delete(); if(o===null||typeof o!=="object"||Array.isArray(o)) return o; const r={}; for(const k in o) r[k]=conv(o[k]); return r; };
+  const mail=u=>u+USER_DOMAIN;
+  const snap=s=>s.exists?Object.assign({id:s.id},s.data()):null;
+  return {
+    mode:"cloud",
+    newId:col=>fs.collection(col).doc().id,
+    getDoc:p=>fs.doc(p).get().then(snap),
+    listenDoc:(p,cb,err)=>fs.doc(p).onSnapshot(s=>cb(snap(s)),e=>err&&err(e)),
+    listenCol(col,cb,opts,err){
+      opts=opts||{}; let q=fs.collection(col);
+      (opts.where||[]).forEach(w=>{ q=q.where(w[0],w[1],w[2]); });
+      if(opts.order) q=q.orderBy(opts.order,opts.desc?"desc":"asc");
+      if(opts.limit) q=q.limit(opts.limit);
+      return q.onSnapshot(s=>cb(s.docs.map(d=>Object.assign({id:d.id},d.data()))),e=>err&&err(e));
+    },
+    set:(p,obj,merge)=>fs.doc(p).set(conv(obj),{merge:!!merge}),
+    del:p=>fs.doc(p).delete(),
+    onAuth:cb=>auth.onAuthStateChanged(u=>cb(u?{uid:u.uid}:null)),
+    signUp:(u,p)=>auth.createUserWithEmailAndPassword(mail(u),p).then(r=>({uid:r.user.uid})),
+    signIn:(u,p)=>auth.signInWithEmailAndPassword(mail(u),p).then(r=>({uid:r.user.uid})),
+    signOut:()=>auth.signOut(),
+    async changePassword(old,nw){
+      const u=auth.currentUser; if(!u) throw {code:"auth/no-user"};
+      await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,old));
+      await u.updatePassword(nw);
+    },
+    deleteSelf:()=>auth.currentUser?auth.currentUser.delete():Promise.resolve()
+  };
+}
+
+/* =====================  APP  ===================== */
+const SCHOOL="People School Sujawal City Campus PSP";
+const DEF_A="Assalam o Alaikum. Your child {name} (Class {class}) was absent from school today, {date}. Please inform the school about the reason. - "+SCHOOL;
+const DEF_L="Assalam o Alaikum. Your child {name} (Class {class}) is marked on leave today, {date}. If you did not approve this leave, please contact the school. - "+SCHOOL;
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ico=(n,c)=>`<svg class="i ${c||""}"><use href="#i-${n}"/></svg>`;
+const pad2=n=>String(n).padStart(2,"0");
+function ymd(d){ return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate()); }
+function todayStr(){ return ymd(new Date()); }
+function niceDate(s){ const [y,m,d]=s.split("-"); return d+"-"+m+"-"+y; }
+function shiftDate(id,n){
+  const el=$(id), p=(el.value||todayStr()).split("-").map(Number);
+  el.value=ymd(new Date(p[0],p[1]-1,p[2]+n)); el.dispatchEvent(new Event("change"));
+}
+let tt;
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove("show"),2600); }
+const COLORS=["#128C7E","#3b82c4","#8e5bd1","#d9822b","#c2487a","#5b8f3a","#d1553f","#2e8f9c"];
+function avatar(name){
+  let h=0; for(const c of name) h=(h*31+c.charCodeAt(0))>>>0;
+  return `<div class="av" style="background:${COLORS[h%COLORS.length]}">${esc(name.trim().charAt(0).toUpperCase()||"?")}</div>`;
+}
+function fixPhone(raw){
+  let n=String(raw).replace(/\D/g,"");
+  if(n.startsWith("0092")) n=n.slice(2);
+  else if(n.startsWith("92")){}
+  else if(n.startsWith("0")) n="92"+n.slice(1);
+  else if(n.length===10&&n.startsWith("3")) n="92"+n;
+  return /^92\d{10}$/.test(n)?n:"";
+}
+function prettyPhone(p){ return "+"+p.slice(0,2)+" "+p.slice(2,5)+" "+p.slice(5); }
+const ROLE={principal:"Principal",admin:"Admin",teacher:"Teacher"};
+const LBL={P:"present",A:"absent",L:"on leave"};
+function fmtTime(t){ return new Date(t).toLocaleString("en-GB",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"}); }
+const normUser=v=>String(v||"").trim().toLowerCase();
+const validUser=u=>/^[a-z0-9._-]{3,20}$/.test(u);
+
+/* ---------- state ---------- */
+const S={students:[],contacts:{},users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null,pub:null};
+let B=null, me=null, setupDone=true, authBusy=false, loggedOnce=false;
+let ownUnsub=null, unsubs=[], dayWatch={}, monthKey="", monthUnsub=null, started=false;
+let curTab="teacher", curSub="home", editId=null, revealed={}, authRole="teacher", authModeV="login", numbersOn=false, numTimer=null, curView="";
+const isPrin=()=>me&&me.role==="principal";
+const isAdmin=()=>me&&(me.role==="admin"||me.role==="principal");
+const classes=()=>[...new Set(S.students.map(s=>s.cls))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+const sortStu=(a,b)=>a.cls.localeCompare(b.cls,undefined,{numeric:true})||a.name.localeCompare(b.name);
+const stuById=id=>S.students.find(s=>s.id===id);
+/* what the Principal allows (default: allowed) */
+const perm=k=>S.perms[k]!==false;
+const canReveal=()=>isPrin()||(isAdmin()&&perm("p_adminReveal"));
+const canApprove=()=>isPrin()||(isAdmin()&&perm("p_adminApprove"));
+const canAddStudent=()=>isAdmin()||perm("p_teacherAdd");
+
+const F={t:"",a:"",r:""};
+function chips(boxId,key,after){
+  const list=classes(); if(!list.includes(F[key])) F[key]="";
+  const box=$(boxId);
+  box.innerHTML=[""].concat(list).map(c=>`<button class="chip ${F[key]===c?"on":""}" data-c="${esc(c)}">${c?"Class "+esc(c):"All classes"}</button>`).join("");
+  box.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{ F[key]=b.dataset.c; after(); });
+  box.style.display=list.length?"":"none";
+}
+
+/* ---------- activity log (the principal sees all of it) ---------- */
+function logAct(text){
+  if(!B||!me) return;
+  B.set("logs/"+B.newId("logs"),{at:Date.now(),uid:me.id,name:me.name,role:me.role,text}).catch(()=>{});
+}
+const netErr=()=>toast("Could not save. Check internet or permission.");
+
+/* ---------- views ---------- */
+function showView(v){
+  const app=v==="app";
+  $("landing").classList.toggle("hide",v!=="landing");
+  $("mainBox").classList.toggle("hide",v==="landing");
+  $("authView").classList.toggle("hide",v!=="auth");
+  $("visitorView").classList.toggle("hide",v!=="visitor");
+  $("pendView").classList.toggle("hide",v!=="pend");
+  $("hdr").classList.toggle("hide",v==="landing");
+  $("backBtn").classList.toggle("hide",!(v==="auth"||v==="visitor"));
+  $("tabs").classList.toggle("hide",!app);
+  $("who").classList.toggle("hide",!(me&&(app||v==="pend")));
+  if(!app){ $("teacher").classList.add("hide"); $("admin").classList.add("hide"); $("fab").classList.add("hide"); }
+  if(v!==curView){ curView=v; window.scrollTo(0,0); }
+}
+function setTab(t){
+  curTab=t; const teacher=t==="teacher";
+  $("teacher").classList.toggle("hide",!teacher);
+  $("admin").classList.toggle("hide",teacher);
+  $("tabT").classList.toggle("on",teacher); $("tabA").classList.toggle("on",!teacher);
+  $("fab").classList.toggle("hide",!(teacher&&canAddStudent()));
+  renderAll();
+}
+let rq=0;
+function rerender(){ if(rq) return; rq=setTimeout(()=>{ rq=0; renderAll(); },30); }
+function renderAll(){
+  if(!me||me.status!=="approved") return;
+  if(curTab==="teacher") renderTeacher(); else renderAdmin();
+}
+
+/* ---------- welcome / auth screens ---------- */
+const ROLE_INFO={
+  principal:{icon:"shield",cls:"pr",title:"Principal login",sub:"Full control of the school"},
+  admin:{icon:"admin",cls:"ad",title:"Admin login",sub:"Students, messages and staff attendance"},
+  teacher:{icon:"clip",cls:"",title:"Teacher login",sub:"Mark attendance for your classes"}
+};
+function enterRole(r){ authRole=r; authModeV="login"; renderAuth(); showView("auth"); }
+function enterVisitor(){ showView("visitor"); loadPublic(); }
+function goLanding(){ showView("landing"); }
+function authMode(m){ authModeV=m; renderAuth(); }
+function renderAuth(){
+  const r=ROLE_INFO[authRole], isP=authRole==="principal";
+  $("authHead").className="authhead "+r.cls;
+  $("authIcon").setAttribute("href","#i-"+r.icon);
+  $("authTitle").textContent=r.title; $("authSub").textContent=r.sub;
+  ["fNone","fLogin","fAct","fSetup"].forEach(id=>$(id).classList.add("hide"));
+  if(!setupDone){
+    if(isP){ $("authTitle").textContent="School setup"; $("authSub").textContent="Create the Principal account"; $("fSetup").classList.remove("hide"); }
+    else $("fNone").classList.remove("hide");
+    return;
+  }
+  if(!isP&&authModeV==="act"){ $("fAct").classList.remove("hide"); return; }
+  $("fLogin").classList.remove("hide");
+  $("toAct").classList.toggle("hide",isP);
+  $("lBtnTxt").textContent="Log in as "+ROLE[authRole];
+}
+function togglePw(id,btn){
+  const el=$(id), show=el.type==="password"; el.type=show?"text":"password";
+  btn.innerHTML=ico(show?"eyeoff":"eye");
+}
+const DEF_PUB={about:"People School Sujawal City Campus PSP is committed to quality education and a safe, caring environment for every student.",addr:"",phone:"",time:"",notice:""};
+async function loadPublic(){
+  let p=null; try{ p=await B.getDoc("config/public"); }catch(e){}
+  S.pub=Object.assign({},DEF_PUB,p||{}); renderVisitor(S.pub);
+}
+function renderVisitor(d){
+  const kv=(ic,l,v)=>`<div class="kv"><div class="kic">${ico(ic)}</div><div><small>${l}</small>${v}</div></div>`;
+  const rows=[], ph=fixPhone(d.phone||"");
+  if(d.about) rows.push(kv("info","About",esc(d.about)));
+  if(d.addr) rows.push(kv("pin","Address",esc(d.addr)));
+  if(d.time) rows.push(kv("clock","Timing",esc(d.time)));
+  if(d.phone) rows.push(kv("phone","Contact",ph?`<a href="tel:+${ph}">${esc(d.phone)}</a> &middot; <a href="https://wa.me/${ph}" target="_blank" rel="noopener">WhatsApp</a>`:esc(d.phone)));
+  $("vInfo").innerHTML=rows.join("");
+  $("vNotice").classList.toggle("hide",!d.notice); $("vNoticeTxt").textContent=d.notice||"";
+}
+function authMsg(e){
+  const c=(e&&e.code)||"";
+  if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c)) return "Wrong username or password";
+  if(/email-already-in-use/.test(c)) return "This username is already activated. Use Log in.";
+  if(/weak-password/.test(c)) return "Password must be at least 6 characters";
+  if(/network/.test(c)) return "No internet connection";
+  if(/too-many/.test(c)) return "Too many attempts. Wait a few minutes.";
+  if(/operation-not-allowed/.test(c)) return "Email/Password login is not turned on in Firebase";
+  if(/permission/.test(c)) return "Not allowed. Ask the school admin.";
+  return "Something went wrong. Try again.";
+}
+function busy(id,on){ const b=$(id); if(b) b.disabled=!!on; }
+async function doLogin(){
+  const u=normUser($("lUser").value), p=$("lPass").value;
+  if(!u||!p) return toast("Enter username and password");
+  busy("lBtn",true); window._wantCheck=authRole;
+  try{ await B.signIn(u,p); $("lPass").value=""; }
+  catch(e){ window._wantCheck=null; toast(authMsg(e)); }
+  busy("lBtn",false);
+}
+async function doActivate(){
+  const u=normUser($("aUser").value), p=$("aPass").value, p2=$("aPass2").value;
+  if(!validUser(u)) return toast("Enter the username given by the school");
+  if(p.length<6) return toast("Password must be at least 6 characters");
+  if(p!==p2) return toast("Passwords do not match");
+  busy("aBtn",true); authBusy=true; let made=false;
+  try{
+    const r=await B.signUp(u,p); made=true;
+    const inv=await B.getDoc("invites/"+u);
+    const bad=!inv?"Username not found. Ask the admin to create it first.":(inv.role!==authRole?"This username is for the "+ROLE[inv.role]+" login. Go back and choose "+ROLE[inv.role]+".":"");
+    if(bad){
+      try{ await B.deleteSelf(); }catch(_){ try{ await B.signOut(); }catch(__){} }
+      toast(bad);
+    } else {
+      await B.set("users/"+r.uid,{username:u,name:inv.name,role:inv.role,status:"pending",createdAt:Date.now()},false);
+      $("aPass").value=""; $("aPass2").value="";
+    }
+  }catch(e){
+    if(made){ try{ await B.deleteSelf(); }catch(_){ try{ await B.signOut(); }catch(__){} } }
+    toast(authMsg(e));
+  }
+  authBusy=false; busy("aBtn",false);
+}
+async function doSetup(){
+  const name=$("sName").value.trim().replace(/\s+/g," "), u=normUser($("sUser").value), p=$("sPass").value;
+  if(!name) return toast("Enter the Principal's name");
+  if(!validUser(u)) return toast("Username: 3-20 letters, numbers, dot or dash");
+  if(p.length<6) return toast("Password must be at least 6 characters");
+  busy("sBtn",true); authBusy=true; let made=false;
+  try{
+    const r=await B.signUp(u,p); made=true;
+    await B.set("users/"+r.uid,{username:u,name,role:"principal",status:"approved",createdAt:Date.now()},false);
+    await B.set("config/setup",{by:r.uid,t:Date.now()},false);
+    setupDone=true; $("sPass").value="";
+  }catch(e){
+    if(made){ try{ await B.deleteSelf(); }catch(_){ try{ await B.signOut(); }catch(__){} } }
+    toast(authMsg(e));
+  }
+  authBusy=false; busy("sBtn",false);
+}
+function doLogout(){
+  if(!B) return;
+  if(me&&me.status==="approved") logAct("logged out");
+  setTimeout(()=>B.signOut(),150);
+}
+
+/* ---------- session ---------- */
+let authTok=0;
+function handleAuth(a){
+  const tok=++authTok;
+  if(ownUnsub){ ownUnsub(); ownUnsub=null; }
+  stopData(); me=null;
+  if(!a) loggedOnce=false;
+  if(!a){
+    if(authBusy||window._stay){ window._stay=false; showView("auth"); renderAuth(); return; }   /* failed attempt: stay on the form */
+    authModeV="login"; showView("landing"); return;
+  }
+  ownUnsub=B.listenDoc("users/"+a.uid,d=>{
+    if(tok!==authTok) return;
+    if(!d){
+      me=null;
+      if(!authBusy){ $("pendTitle").textContent="No access"; $("pendTxt").textContent="This account has no school profile. Log out and ask the admin."; showView("pend"); }
+      return;
+    }
+    me=d; route();
+  },()=>{});
+}
+function route(){
+  if(window._wantCheck){
+    const w=window._wantCheck; window._wantCheck=null;
+    if(me.role!==w){ window._stay=true; toast("This account is "+ROLE[me.role]+", not "+ROLE[w]+". Go back and choose "+ROLE[me.role]+"."); B.signOut(); return; }
+  }
+  $("whoName").textContent=me.name; $("whoRole").textContent=ROLE[me.role]||me.role;
+  if(me.status==="approved"){
+    startData();
+    const first=!loggedOnce;
+    if(first){ loggedOnce=true; logAct("logged in"); curSub="home"; curTab=isAdmin()?"admin":"teacher"; }
+    showView("app"); applyRole();
+    setTab(curTab);
+    if(first&&curTab==="admin") subTab("home");
+  } else {
+    stopData();
+    if(me.status==="pending"){ $("pendTitle").textContent="Waiting for approval"; $("pendTxt").textContent="Your request was sent. The Principal or an Admin must approve you. This screen opens by itself once approved."; }
+    else { $("pendTitle").textContent="Access blocked"; $("pendTxt").textContent="The school has blocked this account. Please contact the Principal."; }
+    showView("pend");
+  }
+}
+function applyRole(){
+  $("tabALbl").textContent=isAdmin()?"Manage":"Account";
+  $("subBar").classList.toggle("hide",!isAdmin());
+  $("tplCard").classList.toggle("hide",!isAdmin());
+  $("sLog").classList.toggle("hide",!isPrin());
+  $("prinSet").classList.toggle("hide",!isPrin());
+  $("fab").classList.toggle("hide",!(curTab==="teacher"&&canAddStudent()));
+  const sel=$("nRole"), want=isPrin()?2:1;
+  if(sel.options.length!==want) sel.innerHTML='<option value="teacher">Teacher</option>'+(isPrin()?'<option value="admin">Admin</option>':"");
+  $("nRoleBox").classList.toggle("hide",!isPrin());
+}
+
+/* ---------- data listeners ---------- */
+function startData(){
+  if(started) return; started=true;
+  const err=()=>{};
+  unsubs.push(B.listenCol("students",a=>{ S.students=a; rerender(); },{},err));
+  unsubs.push(B.listenDoc("config/settings",d=>{ S.settings=d||{}; rerender(); },err));
+  unsubs.push(B.listenDoc("config/perms",d=>{ S.perms=d||{}; applyRole(); rerender(); },err));
+  if(isPrin()) unsubs.push(B.listenDoc("config/public",d=>{ S.pubDoc=d||{}; rerender(); },err));
+  if(isAdmin()){
+    unsubs.push(B.listenCol("contacts",a=>{ S.contacts={}; a.forEach(x=>S.contacts[x.id]=x.phone); rerender(); },{},err));
+    unsubs.push(B.listenCol("users",a=>{ S.users=a; rerender(); },{},err));
+    unsubs.push(B.listenCol("invites",a=>{ S.invites=a; rerender(); },{},err));
+  }
+  if(isPrin()) unsubs.push(B.listenCol("logs",a=>{ S.logs=a; rerender(); },{order:"at",desc:true,limit:150},err));
+}
+function stopData(){
+  unsubs.forEach(f=>{ try{ f(); }catch(e){} }); unsubs=[]; dayWatch={};
+  if(monthUnsub){ try{ monthUnsub(); }catch(e){} monthUnsub=null; } monthKey=""; started=false;
+  Object.assign(S,{students:[],contacts:{},users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null});
+  revealed={}; numbersOn=false; clearTimeout(numTimer);
+}
+function watchDay(d){
+  if(!d||dayWatch[d]||!started) return; dayWatch[d]=1;
+  const err=()=>{};
+  unsubs.push(B.listenDoc("att/"+d,x=>{ S.att[d]=(x&&x.marks)||{}; rerender(); },err));
+  if(isAdmin()){
+    unsubs.push(B.listenDoc("tatt/"+d,x=>{ S.tatt[d]=(x&&x.marks)||{}; rerender(); },err));
+    unsubs.push(B.listenDoc("msgs/"+d,x=>{ S.msgs[d]=(x&&x.sent)||{}; rerender(); },err));
+  }
+}
+function watchMonth(m){
+  if(!m||monthKey===m||!started) return;
+  if(monthUnsub){ try{ monthUnsub(); }catch(e){} }
+  monthKey=m;
+  monthUnsub=B.listenCol("att",a=>{ S.month=a; rerender(); },{where:[["date",">=",m+"-01"],["date","<=",m+"-31"]]},()=>{});
+}
+
+/* ---------- add / edit student ---------- */
+function openSheet(id){
+  editId=id||null;
+  const s=editId?stuById(editId):null;
+  $("shTitle").textContent=s?"Edit student":"Add student";
+  $("fSaveTxt").textContent=s?"Save changes":"Add student";
+  $("fName").value=s?s.name:""; $("fClass").value=s?s.cls:""; $("fPhone").value="";
+  $("fPhone").placeholder=s?"Leave empty to keep the number":"03XX XXXXXXX";
+  phoneHint();
+  $("sheetBg").classList.add("open"); $("sheet").classList.add("open");
+  setTimeout(()=>$("fName").focus(),250);
+}
+function closeSheet(){ $("sheetBg").classList.remove("open"); $("sheet").classList.remove("open"); document.activeElement&&document.activeElement.blur(); }
+function phoneHint(){
+  const v=$("fPhone").value, h=$("fHint"); h.className="hint";
+  if(!v){ h.textContent=editId?"The saved number is hidden. Type a new number only to change it.":"Numbers starting with 0 are saved as 92 automatically."; return; }
+  const f=fixPhone(v);
+  if(f){ h.textContent="Will be saved as "+prettyPhone(f); h.className="hint good"; }
+  else { h.textContent="Number looks incomplete. Example: 0300 1234567"; h.className="hint err"; }
+}
+$("fPhone").addEventListener("input",phoneHint);
+
+function saveStudent(){
+  const name=$("fName").value.trim().replace(/\s+/g," "), cls=$("fClass").value.trim().toUpperCase(), raw=$("fPhone").value.trim(), phone=fixPhone(raw);
+  if(!name) return toast("Enter the student's name");
+  if(!cls) return toast("Enter the class");
+  if(editId){
+    if(raw&&!phone) return toast("Enter a valid parent WhatsApp number");
+    const id=editId;
+    B.set("students/"+id,{name,cls},true).catch(netErr);
+    let extra="";
+    if(phone){ B.set("contacts/"+id,{phone},false).catch(netErr); extra=" and changed the parent number"; }
+    logAct("edited student "+name+" (Class "+cls+")"+extra);
+    closeSheet(); toast("Student updated"); return;
+  }
+  if(!phone) return toast("Enter a valid parent WhatsApp number");
+  if(S.students.some(s=>s.name.toLowerCase()===name.toLowerCase()&&s.cls===cls)) return toast("This student is already added");
+  const id=B.newId("students");
+  B.set("students/"+id,{name,cls,by:me.id,bn:me.name,t:Date.now()},false).then(()=>B.set("contacts/"+id,{phone},false)).catch(netErr);
+  logAct("added student "+name+" (Class "+cls+")");
+  $("fName").value=""; $("fPhone").value=""; phoneHint(); $("fName").focus();
+  toast(name+" added to class "+cls);
+}
+
+/* ---------- attendance (everyone) ---------- */
+function mark(id,status){
+  const d=$("tDate").value, cur=(S.att[d]||{})[id], s=stuById(id); if(!s) return;
+  const clear=cur&&cur.s===status;
+  const v=clear?DEL:{s:status,by:me.id,bn:me.name,t:Date.now()};
+  B.set("att/"+d,{date:d,marks:{[id]:v}},true).catch(netErr);
+  if(status!=="P"||clear) logAct(clear?"cleared the mark of "+s.name+" (Class "+s.cls+") on "+niceDate(d):"marked "+s.name+" (Class "+s.cls+") "+LBL[status]+" on "+niceDate(d));
+}
+function markAll(){
+  const d=$("tDate").value, day=S.att[d]||{}, marks={}; let n=0;
+  S.students.filter(s=>!F.t||s.cls===F.t).forEach(s=>{ if(!day[s.id]){ marks[s.id]={s:"P",by:me.id,bn:me.name,t:Date.now()}; n++; } });
+  if(!n) return toast("Everyone is already marked");
+  B.set("att/"+d,{date:d,marks},true).catch(netErr);
+  logAct("marked "+n+" students present"+(F.t?" in Class "+F.t:"")+" on "+niceDate(d)); toast(n+" students marked present");
+}
+function renderTeacher(){
+  if(!$("tDate").value) $("tDate").value=todayStr();
+  const d=$("tDate").value; watchDay(d);
+  chips("tChips","t",renderTeacher);
+  const q=$("tSearch").value.trim().toLowerCase(), day=S.att[d]||{};
+  const all=S.students.filter(s=>!F.t||s.cls===F.t).sort(sortStu);
+  const list=all.filter(s=>!q||s.name.toLowerCase().includes(q));
+  const cnt=k=>all.filter(s=>day[s.id]&&day[s.id].s===k).length;
+  const p=cnt("P"), a=cnt("A"), l=cnt("L"), u=all.length-p-a-l;
+  $("tStats").innerHTML=`<div class="tile p"><b>${p}</b><span>Present</span></div><div class="tile a"><b>${a}</b><span>Absent</span></div><div class="tile l"><b>${l}</b><span>Leave</span></div><div class="tile"><b>${u}</b><span>Left</span></div>`;
+  const pct=all.length?Math.round(p*100/all.length):0;
+  $("ringTxt").textContent=pct+"%"; $("ringFg").style.strokeDashoffset=213.6*(1-pct/100);
+  if(!S.students.length){ $("tList").innerHTML=`<div class="empty">${ico("users")}No students yet.<br>Tap "Add student" to begin.</div>`; return; }
+  if(!list.length){ $("tList").innerHTML=`<div class="empty">${ico("search")}No students match.</div>`; return; }
+  $("tList").innerHTML=list.map(s=>{
+    const m=day[s.id];
+    return `<div class="stu">${avatar(s.name)}
+      <div class="info"><div class="nm">${esc(s.name)}</div><div class="meta"><span class="cls">${esc(s.cls)}</span>${m?`<span class="by">${esc(m.bn||"")}</span>`:""}</div></div>
+      <div class="tog">
+        <button class="p ${m&&m.s==="P"?"on":""}" aria-label="Present" onclick="mark('${s.id}','P')">${ico("check")}</button>
+        <button class="a ${m&&m.s==="A"?"on":""}" aria-label="Absent" onclick="mark('${s.id}','A')">${ico("x")}</button>
+        <button class="l ${m&&m.s==="L"?"on":""}" aria-label="Leave" onclick="mark('${s.id}','L')">${ico("cal")}</button>
+      </div></div>`;
+  }).join("");
+}
+
+
+/* ---------- admin ---------- */
+function subTab(t){
+  if(t==="log"&&!isPrin()) t="home";
+  curSub=t;
+  const map={home:"Home",msg:"Msg",stu:"Stu",staff:"Staff",satt:"SAtt",rep:"Rep",set:"Set",log:"Log"};
+  Object.keys(map).forEach(k=>{ $("v"+map[k]).classList.toggle("hide",k!==t); $("s"+map[k]).classList.toggle("on",k===t); });
+  renderAdmin(); window.scrollTo(0,0);
+}
+function renderAdmin(){
+  if(!isAdmin()){
+    ["Home","Msg","Stu","Staff","SAtt","Rep","Log"].forEach(k=>$("v"+k).classList.add("hide"));
+    $("vSet").classList.remove("hide"); renderSettings(); return;
+  }
+  if(!$("aDate").value) $("aDate").value=todayStr();
+  if(!$("stDate").value) $("stDate").value=todayStr();
+  if(!$("rMonth").value) $("rMonth").value=todayStr().slice(0,7);
+  if(curSub==="home") renderHome();
+  else if(curSub==="msg") renderMsgs();
+  else if(curSub==="stu") renderStudents();
+  else if(curSub==="staff") renderStaff();
+  else if(curSub==="satt") renderStaffAtt();
+  else if(curSub==="rep") renderReport();
+  else if(curSub==="set") renderSettings();
+  else if(curSub==="log") renderLog();
+}
+
+/* dashboard */
+function renderHome(){
+  const d=todayStr(); watchDay(d);
+  $("hGreet").innerHTML=ico("home")+"Assalam o Alaikum, "+esc(me.name);
+  $("hDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+  const day=S.att[d]||{}, stu=S.students;
+  const cnt=k=>stu.filter(s=>day[s.id]&&day[s.id].s===k).length;
+  $("hStats").innerHTML=`<div class="tile"><b>${stu.length}</b><span>Students</span></div><div class="tile p"><b>${cnt("P")}</b><span>Present</span></div><div class="tile a"><b>${cnt("A")}</b><span>Absent</span></div><div class="tile l"><b>${cnt("L")}</b><span>Leave</span></div>`;
+  const pend=S.users.filter(u=>u.status==="pending").length;
+  $("hApprove").classList.toggle("hide",!pend);
+  $("hApproveTxt").textContent=pend+" staff waiting for approval";
+  const cl=classes();
+  $("hClasses").innerHTML=cl.length?cl.map(c=>{
+    const arr=stu.filter(s=>s.cls===c), mk=arr.filter(s=>day[s.id]).length, pp=arr.filter(s=>day[s.id]&&day[s.id].s==="P").length;
+    const st=mk===arr.length?["ok","Marked"]:mk?["pend",mk+"/"+arr.length]:["bl","Not marked"];
+    return `<div class="crow"><div class="cn">Class ${esc(c)}</div><div class="cv">${pp}/${arr.length} present</div><span class="tag ${st[0]}">${st[1]}</span></div>`;
+  }).join(""):`<div class="empty">${ico("users")}No students yet. Add them in the Students tab.</div>`;
+  const need=stu.filter(s=>day[s.id]&&(day[s.id].s==="A"||day[s.id].s==="L")), inf=need.filter(s=>sentInfo(d,s)).length;
+  $("hParents").innerHTML=need.length?`<div class="crow"><div class="cn">Absent or on leave today</div><div class="cv">${need.length}</div></div><div class="crow"><div class="cn">Parents informed</div><div class="cv">${inf}</div></div><div class="crow"><div class="cn">Still to inform</div><div class="cv"><b>${need.length-inf}</b></div></div>`:`<div class="empty">${ico("checkall")}Nobody is absent or on leave so far today.</div>`;
+  const tday=S.tatt[d]||{}, staff=S.users.filter(u=>u.status==="approved"&&u.role!=="principal");
+  const sc=k=>staff.filter(u=>tday[u.id]&&tday[u.id].s===k).length;
+  $("hStaff").innerHTML=`<div class="tile p"><b>${sc("P")}</b><span>Present</span></div><div class="tile a"><b>${sc("A")}</b><span>Absent</span></div><div class="tile l"><b>${sc("L")}</b><span>Leave</span></div>`;
+  $("hRecentCard").classList.toggle("hide",!isPrin());
+  if(isPrin()) $("hRecent").innerHTML=S.logs.slice(0,6).map(l=>`<div class="logrow"><div class="t">${esc(fmtTime(l.at))}<span class="tag rl">${esc(ROLE[l.role]||l.role||"")}</span></div><b>${esc(l.name||"")}</b> ${esc(l.text||"")}</div>`).join("")||`<div class="empty">${ico("log")}Nothing yet.</div>`;
+}
+
+/* messages to parents */
+function msgList(d){
+  const day=S.att[d]||{};
+  return S.students.filter(s=>(!F.a||s.cls===F.a)&&day[s.id]&&(day[s.id].s==="A"||day[s.id].s==="L")).sort(sortStu);
+}
+function sentInfo(d,s){ const m=(S.msgs[d]||{})[s.id], cur=(S.att[d]||{})[s.id]; return m&&cur&&m.s===cur.s?m:null; }
+function buildMsg(s,d){
+  const st=S.att[d][s.id].s, set=S.settings||{};
+  const tpl=st==="L"?(set.tplL||DEF_L):(set.tplA||DEF_A);
+  return tpl.replace(/\{name\}/g,s.name).replace(/\{class\}/g,s.cls).replace(/\{date\}/g,niceDate(d)).replace(/\{by\}/g,me.name);
+}
+const waUrl=(s,d)=>S.contacts[s.id]?"https://wa.me/"+S.contacts[s.id]+"?text="+encodeURIComponent(buildMsg(s,d)):"";
+function renderMsgs(){
+  const d=$("aDate").value; watchDay(d);
+  chips("aChips","a",renderMsgs);
+  const list=msgList(d);
+  const nA=list.filter(s=>S.att[d][s.id].s==="A").length, nL=list.length-nA;
+  const done=list.filter(s=>sentInfo(d,s)).length;
+  $("aStats").innerHTML=`<div class="tile a"><b>${nA}</b><span>Absent</span></div><div class="tile l"><b>${nL}</b><span>Leave</span></div><div class="tile p"><b>${done}</b><span>Informed</span></div><div class="tile"><b>${list.length-done}</b><span>Pending</span></div>`;
+  const pend=list.filter(s=>!sentInfo(d,s)&&S.contacts[s.id]).length;
+  $("nextTxt").textContent=pend?"Send next ("+pend+" left)":"All parents informed";
+  $("nextBtn").disabled=!pend;
+  if(!list.length){
+    const marked=S.students.some(s=>(S.att[d]||{})[s.id]);
+    $("aList").innerHTML=`<div class="empty">${ico(marked?"checkall":"cal")}${marked?"No absent or leave students on this date.":"Attendance has not been marked for this date yet."}</div>`;
+  } else {
+    $("aList").innerHTML=list.map(s=>{
+      const m=S.att[d][s.id], si=sentInfo(d,s), url=waUrl(s,d);
+      return `<div class="stu">${avatar(s.name)}
+        <div class="info"><div class="nm">${esc(s.name)}</div>
+          <div class="meta"><span class="cls">${esc(s.cls)}</span><span class="tag ${m.s==="A"?"ab":"lv"}">${m.s==="A"?"Absent":"Leave"}</span><span class="by">marked by ${esc(m.bn||"")}</span>${numbersOn&&S.contacts[s.id]?esc(prettyPhone(S.contacts[s.id])):""}</div>
+          <div class="meta"><span class="tag ${si?"sent":"pend"}">${si?"Informed":"Pending"}</span>${si?`<span class="by">by ${esc(si.bn||"")}</span>`:""}</div></div>
+        ${url?`<a class="btn wa sm" href="${url}" target="_blank" rel="noopener" onclick="markSent('${s.id}','${d}')">${ico("wa","sm")}WhatsApp</a>`:`<span class="pill">No number</span>`}
+      </div>`;
+    }).join("");
+  }
+}
+function markSent(id,d){
+  const cur=(S.att[d]||{})[id], s=stuById(id); if(!cur||!s) return;
+  B.set("msgs/"+d,{date:d,sent:{[id]:{s:cur.s,by:me.id,bn:me.name,t:Date.now()}}},true).catch(netErr);
+  logAct("informed the parent of "+s.name+" (Class "+s.cls+", "+LBL[cur.s]+") on "+niceDate(d));
+}
+function sendNext(){
+  const d=$("aDate").value, s=msgList(d).find(x=>!sentInfo(d,x)&&S.contacts[x.id]);
+  if(!s) return toast("All parents are informed");
+  const url=waUrl(s,d); markSent(s.id,d);
+  const w=window.open(url,"_blank"); if(!w) location.href=url;
+}
+function copyText(text,okMsg){
+  const ok=()=>toast(okMsg);
+  const fb=()=>{ const t=document.createElement("textarea"); t.value=text; t.style.cssText="position:fixed;top:0;left:0;opacity:0;font-size:16px"; document.body.appendChild(t); t.focus(); t.select(); try{ t.setSelectionRange(0,999999); }catch(e){} let done=false; try{ done=document.execCommand("copy"); }catch(e){} t.remove(); done?ok():toast("Could not copy. Long-press to copy."); };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok,fb); else fb();
+}
+function copyGroup(){
+  const d=$("aDate").value, list=msgList(d); if(!list.length) return toast("Nobody to inform");
+  const ab=list.filter(s=>S.att[d][s.id].s==="A"), lv=list.filter(s=>S.att[d][s.id].s==="L");
+  let t="Assalam o Alaikum. Attendance notice, "+niceDate(d)+" - "+SCHOOL+"\n";
+  if(ab.length) t+="\nAbsent:\n"+ab.map(s=>"- "+s.name+" (Class "+s.cls+")").join("\n")+"\n";
+  if(lv.length) t+="\nOn leave:\n"+lv.map(s=>"- "+s.name+" (Class "+s.cls+")").join("\n")+"\n";
+  t+="\nParents, please contact the school if any of this is a mistake. - "+me.name;
+  copyText(t,"Message copied. Paste it in your parents group.");
+}
+function saveTpl(){
+  const a=$("tplA").value.trim(), l=$("tplL").value.trim();
+  if(!a||!l) return toast("Messages cannot be empty");
+  B.set("config/settings",{tplA:a,tplL:l},true).then(()=>{ tplDirty=false; toast("Messages saved"); }).catch(netErr);
+  logAct("changed the parent message text");
+}
+
+/* students (numbers hidden unless asked) */
+function renderStudents(){
+  const q=$("sSearch").value.trim().toLowerCase();
+  $("stuCount").textContent="("+S.students.length+")";
+  $("numBtnTxt").textContent=numbersOn?"Hide all numbers":"Show all numbers";
+  $("numBtn").classList.toggle("hide",!canReveal());
+  $("stuHint").textContent=canReveal()?"Parent numbers stay hidden. Tap the eye to show one, or show all of them for a few minutes.":"Parent numbers are hidden by the Principal. You can still send messages.";
+  const list=S.students.filter(s=>!q||(s.name+" "+s.cls).toLowerCase().includes(q)).sort(sortStu);
+  if(!list.length){ $("sList").innerHTML=`<div class="empty">${ico("users")}${S.students.length?"No students match.":"No students added yet."}</div>`; return; }
+  $("sList").innerHTML=list.map(s=>{
+    const ph=S.contacts[s.id], shown=(numbersOn||revealed[s.id])&&ph;
+    return `<div class="stu">${avatar(s.name)}
+      <div class="info"><div class="nm">${esc(s.name)}</div><div class="meta"><span class="cls">${esc(s.cls)}</span>${ph?(shown?esc(prettyPhone(ph)):'<span class="mask">&bull;&bull;&bull;&bull; &bull;&bull;&bull; &bull;&bull;&bull;&bull;</span>'):'<span class="tag pend">No number</span>'}</div></div>
+      ${ph&&canReveal()?`<button class="btn sec ico" aria-label="Show number" onclick="reveal('${s.id}')">${ico("eye")}</button>`:""}
+      <button class="btn sec ico" aria-label="Edit" onclick="openSheet('${s.id}')">${ico("edit")}</button>
+      <button class="btn bad ico" aria-label="Delete" onclick="delStudent('${s.id}')">${ico("trash")}</button>
+    </div>`;
+  }).join("");
+}
+function reveal(id){
+  const s=stuById(id); if(!s||!canReveal()) return;
+  if(revealed[id]){ delete revealed[id]; renderStudents(); return; }
+  revealed[id]=true; logAct("viewed the parent number of "+s.name+" (Class "+s.cls+")"); renderStudents();
+  setTimeout(()=>{ delete revealed[id]; if(curTab==="admin"&&curSub==="stu") renderStudents(); },8000);
+}
+function delStudent(id){
+  const s=stuById(id); if(!s) return;
+  if(!confirm("Delete "+s.name+"? Old attendance records stay in the reports of past months only as counts.")) return;
+  B.del("students/"+id).then(()=>B.del("contacts/"+id)).catch(netErr);
+  logAct("deleted student "+s.name+" (Class "+s.cls+")"); toast("Student deleted");
+}
+
+/* show / hide all numbers */
+const hideMin=()=>Math.max(1,parseInt(store.get("PSP_hide_min")||"5",10)||5);
+function toggleNumbers(){
+  if(!canReveal()) return toast("The Principal has turned this off for admins");
+  if(numbersOn){ numbersOn=false; clearTimeout(numTimer); logAct("hid the parent numbers"); toast("Numbers hidden"); renderAdmin(); return; }
+  if(!confirm("Show all parent numbers for "+hideMin()+" minute(s)? This is recorded in Activity.")) return;
+  numbersOn=true; clearTimeout(numTimer);
+  numTimer=setTimeout(()=>{ numbersOn=false; renderAdmin(); toast("Numbers hidden again"); },hideMin()*60000);
+  logAct("turned on showing all parent numbers"); renderAdmin();
+}
+function saveHideMin(){ store.set("PSP_hide_min",$("hideMin").value); toast("Saved"); }
+let tplDirty=false, pubDirty=false;
+function applyTheme(){
+  const v=store.get("PSP_theme")||"auto";
+  document.documentElement.setAttribute("data-theme",v==="auto"?"":v);
+  document.documentElement.setAttribute("data-big",store.get("PSP_big")==="1"?"1":"");
+}
+function setTheme(v){ store.set("PSP_theme",v); applyTheme(); renderSettings(); }
+function setBig(on){ store.set("PSP_big",on?"1":"0"); applyTheme(); }
+function renderSettings(){
+  const th=store.get("PSP_theme")||"auto";
+  document.querySelectorAll("#themeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===th));
+  $("bigTxt").checked=store.get("PSP_big")==="1";
+  $("numCard").classList.toggle("hide",!canReveal());
+  $("numState").textContent=numbersOn?"Numbers are visible now.":"Numbers are hidden.";
+  $("numBtn2Txt").textContent=numbersOn?"Hide all numbers":"Show all numbers";
+  const ae=document.activeElement;
+  if(ae!==$("hideMin")) $("hideMin").value=String(hideMin());
+  if(!tplDirty){ $("tplA").value=(S.settings&&S.settings.tplA)||DEF_A; $("tplL").value=(S.settings&&S.settings.tplL)||DEF_L; }
+  $("myName").textContent=me.name+" ("+me.username+")"; $("myRole").textContent=ROLE[me.role]||me.role;
+  if(isPrin()){
+    $("pReveal").checked=perm("p_adminReveal"); $("pApprove").checked=perm("p_adminApprove"); $("pTeacherAdd").checked=perm("p_teacherAdd");
+    if(!pubDirty){ const p=Object.assign({},DEF_PUB,S.pubDoc||{}); $("pAbout").value=p.about||""; $("pAddr").value=p.addr||""; $("pPhone").value=p.phone||""; $("pTime").value=p.time||""; $("pNotice").value=p.notice||""; }
+  }
+}
+function savePerm(k,v){
+  if(!isPrin()) return;
+  B.set("config/perms",{[k]:!!v},true).then(()=>toast("Saved")).catch(netErr);
+  const names={p_adminReveal:"admins can view parent numbers",p_adminApprove:"admins can approve teachers",p_teacherAdd:"teachers can add students"};
+  logAct("set \""+names[k]+"\" to "+(v?"ON":"OFF"));
+}
+function savePublic(){
+  if(!isPrin()) return;
+  const o={about:$("pAbout").value.trim(),addr:$("pAddr").value.trim(),phone:$("pPhone").value.trim(),time:$("pTime").value.trim(),notice:$("pNotice").value.trim(),t:Date.now()};
+  B.set("config/public",o,true).then(()=>{ pubDirty=false; toast("School profile saved"); }).catch(netErr);
+  logAct("updated the school profile / visitor notice");
+}
+function exportStudents(){
+  if(!isPrin()) return;
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const lines=[["Name","Class","Parent number"].map(q).join(",")];
+  S.students.slice().sort(sortStu).forEach(s=>lines.push([s.name,s.cls,S.contacts[s.id]||""].map(q).join(",")));
+  download("PSP-Students-"+todayStr()+".csv","\ufeff"+lines.join("\n"),"text/csv");
+  logAct("downloaded the student list with parent numbers");
+}
+async function changePass(){
+  const o=$("cpOld").value, n=$("cpNew").value, n2=$("cpNew2").value;
+  if(!o) return toast("Enter your current password");
+  if(n.length<6) return toast("New password must be at least 6 characters");
+  if(n!==n2) return toast("New passwords do not match");
+  try{ await B.changePassword(o,n); $("cpOld").value=$("cpNew").value=$("cpNew2").value=""; logAct("changed their password"); toast("Password changed"); }
+  catch(e){ toast(/wrong|invalid|credential/.test((e&&e.code)||"")?"Current password is wrong":authMsg(e)); }
+}
+
+/* staff */
+function canManage(u){ return u.id!==me.id&&u.role!=="principal"&&(isPrin()||u.role==="teacher"); }
+function createInvite(){
+  const name=$("nName").value.trim().replace(/\s+/g," "), u=normUser($("nUser").value), role=isPrin()?$("nRole").value:"teacher";
+  if(!name) return toast("Enter the full name");
+  if(!validUser(u)) return toast("Username: 3-20 letters, numbers, dot or dash");
+  if(S.invites.some(i=>i.username===u)||S.users.some(x=>x.username===u)) return toast("This username already exists");
+  B.set("invites/"+u,{username:u,name,role,by:me.name,t:Date.now()},false).then(()=>{
+    toast("Username created. Tell "+name+" to tap First time and use: "+u);
+  }).catch(netErr);
+  logAct("created the "+ROLE[role]+" username "+u+" for "+name);
+  $("nName").value=""; $("nUser").value="";
+}
+function approveUser(id){ const u=S.users.find(x=>x.id===id); if(!u||!canApprove()) return toast("Only the Principal can approve staff"); B.set("users/"+id,{status:"approved"},true).catch(netErr); logAct("approved "+u.name+" ("+ROLE[u.role]+")"); }
+function setStatus(id,st){
+  const u=S.users.find(x=>x.id===id); if(!u) return;
+  if(st==="blocked"&&!confirm("Block "+u.name+"? They will not be able to open the app.")) return;
+  B.set("users/"+id,{status:st},true).catch(netErr); logAct((st==="blocked"?"blocked ":"allowed ")+u.name+" ("+ROLE[u.role]+")");
+}
+function setRole(id,role){
+  if(!isPrin()) return; const u=S.users.find(x=>x.id===id); if(!u) return;
+  if(!confirm("Make "+u.name+" a "+ROLE[role]+"?")) return;
+  B.set("users/"+id,{role},true).catch(netErr); logAct("changed "+u.name+" from "+ROLE[u.role]+" to "+ROLE[role]);
+}
+function delInvite(u){ if(!confirm("Remove the username "+u+"?")) return; B.del("invites/"+u).catch(netErr); logAct("removed the unused username "+u); }
+function markStaff(uid,status){
+  const d=$("stDate").value, cur=(S.tatt[d]||{})[uid], u=S.users.find(x=>x.id===uid); if(!u) return;
+  const clear=cur&&cur.s===status;
+  B.set("tatt/"+d,{date:d,marks:{[uid]:clear?DEL:{s:status,by:me.id,bn:me.name,t:Date.now()}}},true).catch(netErr);
+  logAct(clear?"cleared the attendance of "+u.name+" on "+niceDate(d):"marked "+u.name+" ("+ROLE[u.role]+") "+LBL[status]+" on "+niceDate(d));
+}
+function renderStaff(){
+  const pend=S.users.filter(u=>u.status==="pending");
+  $("pendCard").classList.toggle("hide",!pend.length);
+  $("pendList").innerHTML=pend.map(u=>`<div class="stu">${avatar(u.name)}
+    <div class="info"><div class="nm">${esc(u.name)}</div><div class="meta"><span class="tag rl">${ROLE[u.role]||esc(u.role)}</span>${esc(u.username)}</div></div>
+    ${canManage(u)&&canApprove()?`<button class="btn wa sm" onclick="approveUser('${u.id}')">${ico("check","sm")}Approve</button><button class="btn bad ico" aria-label="Reject" onclick="setStatus('${u.id}','blocked')">${ico("x")}</button>`:`<span class="pill">Principal only</span>`}
+  </div>`).join("");
+
+  renderStaffList();
+}
+function renderStaffAtt(){
+  if(!$("stDate").value) $("stDate").value=todayStr();
+  const d=$("stDate").value; watchDay(d);
+  const tday=S.tatt[d]||{};
+  const staff=S.users.filter(u=>u.status==="approved"&&u.id!==me.id&&(u.role==="teacher"||(u.role==="admin"&&isPrin()))).sort((a,b)=>a.name.localeCompare(b.name));
+  $("stAtt").innerHTML=staff.length?staff.map(u=>{
+    const m=tday[u.id];
+    return `<div class="stu">${avatar(u.name)}
+      <div class="info"><div class="nm">${esc(u.name)}</div><div class="meta"><span class="tag rl">${ROLE[u.role]}</span>${m?`<span class="by">${esc(m.bn||"")}</span>`:""}</div></div>
+      <div class="tog">
+        <button class="p ${m&&m.s==="P"?"on":""}" aria-label="Present" onclick="markStaff('${u.id}','P')">${ico("check")}</button>
+        <button class="a ${m&&m.s==="A"?"on":""}" aria-label="Absent" onclick="markStaff('${u.id}','A')">${ico("x")}</button>
+        <button class="l ${m&&m.s==="L"?"on":""}" aria-label="Leave" onclick="markStaff('${u.id}','L')">${ico("cal")}</button>
+      </div></div>`;
+  }).join(""):`<div class="empty">${ico("users")}No approved staff to mark yet. Create and approve a username in the Staff tab first.</div>`;
+}
+function renderStaffList(){
+  const have=new Set(S.users.map(u=>u.username));
+  const unused=S.invites.filter(i=>!have.has(i.username));
+  const rows=S.users.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(u=>`<div class="
