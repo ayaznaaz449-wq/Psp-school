@@ -294,6 +294,46 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
 #splash h2,#splash p{text-shadow:0 2px 8px rgba(0,0,0,.6)}
 .hdr{background:linear-gradient(90deg,rgba(3,28,52,.86) 0%,rgba(3,28,52,.62) 55%,rgba(3,28,52,.38) 100%),var(--hdrbg) center 45%/cover!important}
 .hdr h1,.hdr small{text-shadow:0 1px 6px rgba(0,0,0,.7)}
+
+#splash{overflow:hidden}
+#splash .crest.sc-crest{width:104px;height:104px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both;box-shadow:0 8px 26px rgba(0,0,0,.45)}
+.sc-bg{position:absolute;inset:-6%;background:var(--splashbg) center/cover;animation:kb 6s ease-out forwards}
+@keyframes kb{from{transform:scale(1.25) translateY(3%)}to{transform:scale(1.02)}}
+.sc-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,58,45,.30),rgba(6,58,45,.78))}
+.sc-sun{position:absolute;top:7%;right:10%;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,#fff6c9 0%,rgba(255,220,120,.55) 40%,transparent 70%);animation:sun 3.5s ease-in-out infinite alternate}
+@keyframes sun{from{transform:scale(.9);opacity:.65}to{transform:scale(1.18);opacity:1}}
+.sc-cloud{position:absolute;height:26px;width:96px;border-radius:30px;background:rgba(255,255,255,.55);filter:blur(1px);animation:cl linear infinite}
+.sc-cloud:before,.sc-cloud:after{content:"";position:absolute;background:inherit;border-radius:50%}
+.sc-cloud:before{width:40px;height:40px;left:12px;top:-20px}.sc-cloud:after{width:32px;height:32px;left:48px;top:-13px}
+.sc-cloud.c1{top:13%;left:-140px;animation-duration:13s}.sc-cloud.c2{top:25%;left:-180px;width:70px;animation-duration:19s;animation-delay:-7s;opacity:.7}
+@keyframes cl{to{transform:translateX(135vw)}}
+.sc-bird{position:absolute;width:30px;opacity:0;animation:bird 4.6s linear infinite}
+.sc-bird.b1{top:21%;left:-40px;animation-delay:.5s}.sc-bird.b2{top:29%;left:-40px;width:22px;animation-delay:1.3s}.sc-bird.b3{top:17%;left:-40px;width:26px;animation-delay:2.1s}
+@keyframes bird{0%{transform:translate(0,0);opacity:0}10%{opacity:.95}50%{transform:translate(55vw,-26px)}100%{transform:translate(125vw,10px);opacity:0}}
+.sc-center{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 22px}
+.sc-ring{position:absolute;top:0;left:50%;margin-left:-52px;width:104px;height:104px;border-radius:50%;border:2px solid #c9a24d;animation:ring 1.8s ease-out .5s infinite;opacity:0}
+@keyframes ring{from{transform:scale(1);opacity:.9}to{transform:scale(1.9);opacity:0}}
+.sc-title{margin-top:22px;font-size:23px;font-weight:800;line-height:1.35;max-width:330px;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.75)}
+.sc-title span{display:inline-block;opacity:0;transform:translateY(18px);filter:blur(6px);animation:wd .7s ease-out forwards}
+.sc-title span:nth-child(1){animation-delay:.7s}.sc-title span:nth-child(2){animation-delay:.88s}.sc-title span:nth-child(3){animation-delay:1.06s}.sc-title span:nth-child(4){animation-delay:1.24s}.sc-title span:nth-child(5){animation-delay:1.42s}.sc-title span:nth-child(6){animation-delay:1.6s}
+@keyframes wd{to{opacity:1;transform:none;filter:none}}
+.sc-line{height:3px;width:0;background:#c9a24d;border-radius:3px;margin:13px 0 11px;animation:ln .9s ease-out 1.9s forwards}
+@keyframes ln{to{width:140px}}
+.sc-sub{letter-spacing:5px;font-size:12px;font-weight:700;color:#fff;opacity:0;animation:fd .8s ease-out 2.2s forwards;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+@keyframes fd{to{opacity:.92}}
+#welcome{position:fixed;inset:0;z-index:250;background:linear-gradient(160deg,rgba(6,58,45,.97),rgba(11,90,71,.95));color:#fff;align-items:center;justify-content:center;text-align:center;opacity:0}
+#welcome.go{animation:wlAll 3.3s ease forwards}
+@keyframes wlAll{0%{opacity:0}12%{opacity:1;transform:none}80%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-34px) scale(1.04)}}
+.wl-card{display:flex;flex-direction:column;align-items:center;padding:20px}
+.wl-crest{width:84px;height:84px;margin-bottom:16px;animation:pop .8s cubic-bezier(.2,1.4,.4,1) both}
+.wl-hi{font-size:15px;letter-spacing:6px;text-transform:uppercase;opacity:.85}
+.wl-role{font-size:30px;font-weight:800;color:#e9c46a;margin-top:6px;animation:fd .6s ease-out .3s both}
+.wl-name{font-size:26px;font-weight:700;margin-top:6px;max-width:320px;line-height:1.3}
+.wl-name span{display:inline-block;opacity:0;transform:translateY(22px) rotateX(70deg);animation:wl2 .5s ease-out forwards}
+@keyframes wl2{to{opacity:1;transform:none}}
+.wl-line{height:3px;width:0;background:#c9a24d;border-radius:3px;margin-top:16px;animation:ln .8s ease-out 1.1s forwards}
+@media (prefers-reduced-motion:reduce){.sc-bg,.sc-cloud,.sc-bird,.sc-sun,.sc-ring{animation:none}}
+.hero .crest,.vhero .crest{margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
@@ -340,14 +380,17 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
 </svg>
 
 <!-- splash -->
-<div id="splash"><div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#fff8;font-size:12px">build 8</div>
-  <span class="crest" role="img" aria-label="School"></span>
-  <h2>People School Sujawal City Campus PSP</h2>
-  <p>Attendance Pro</p>
-  <div class="ld"><i></i></div>
+<div id="splash">
+  <div class="sc-bg"></div><div class="sc-shade"></div><div class="sc-sun"></div>
+  <div class="sc-cloud c1"></div><div class="sc-cloud c2"></div>
+  <svg class="sc-bird b1" viewBox="0 0 40 16"><path d="M2 12Q10 0 20 10Q30 0 38 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+  <svg class="sc-bird b2" viewBox="0 0 40 16"><path d="M2 12Q10 0 20 10Q30 0 38 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+  <svg class="sc-bird b3" viewBox="0 0 40 16"><path d="M2 12Q10 0 20 10Q30 0 38 12" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+  <div class="sc-center"><span class="sc-ring"></span><span class="crest sc-crest"></span>
+    <div class="sc-title"><span>People</span> <span>School</span> <span>Sujawal</span> <span>City</span> <span>Campus</span> <span>PSP</span></div>
+    <div class="sc-line"></div><div class="sc-sub">ATTENDANCE PRO</div></div>
 </div>
-
-<div id="crash" class="hide"><span>Something went wrong.</span><button onclick="location.reload()">Reload</button></div>
+<div id="welcome" style="display:none"><div class="wl-card"><span class="crest wl-crest"></span><div class="wl-hi">Welcome</div><div class="wl-role" id="wlRole"></div><div class="wl-name" id="wlName"></div><div class="wl-line"></div></div></div>
 
 <div class="hdr hide" id="hdr">
   <div class="in">
@@ -515,6 +558,17 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
       <h2><svg class="i"><use href="#i-chart"/></svg>Progress reports</h2>
       <p class="hint">Separate from attendance. Pick a class, then tap a student to write or read the report.</p>
       <select id="pgCls" onchange="renderProgTab()"></select>
+      <button class="btn out full" style="margin:8px 0" onclick="toggleSum()">Whole class report</button>
+      <div class="hide" id="pgSum">
+        <p class="hint" id="pgSub"></p>
+        <div class="tblw" id="pgTbl"></div>
+        <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
+          <button class="btn wa sm" onclick="shareSum()">Share summary</button>
+          <button class="btn sec sm" onclick="sumCsv()">Download CSV</button>
+          <button class="btn sec sm hide" id="pgSubmit" onclick="submitSum()">Send to Principal/Admin</button>
+          <button class="btn wa sm hide" id="pgPar" onclick="sendNextPr()">Send to parents</button>
+        </div>
+      </div>
       <div id="pgList"></div>
     </div>
   </section>
@@ -631,7 +685,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
         <label for="rExam">Exam name</label><input id="rExam" placeholder="e.g. Midterm 2026" oninput="renderRes()">
         <div class="row"><div><label for="rTot">Total marks</label><input id="rTot" type="number" inputmode="numeric" placeholder="100" oninput="renderRes()"></div>
         <div><label for="rCls">Class</label><select id="rCls" onchange="renderRes()"></select></div></div>
-        <div class="row" style="margin-top:10px"><button class="btn wa sm" onclick="sendNextRes()">Send next to parents</button><button class="btn sec sm" id="rPubBtn" onclick="pubRes()">Show to visitors</button></div>
+        <div class="row" style="margin-top:10px"><button class="btn wa sm" onclick="sendNextRes()">Send next to parents</button><button class="btn bad sm hide" id="rUnBtn" onclick="unpubRes()">Remove from visitors</button><button class="btn sec sm" id="rPubBtn" onclick="pubRes()">Show to visitors</button></div>
         <p class="hint" id="rHint"></p>
         <div id="rList"></div>
       </div>
@@ -678,6 +732,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
         <button class="btn full" onclick="saveTpl()">Save messages</button>
       </div>
 
+      <div class="card hide" id="nameCard">
+        <h2><svg class="i"><use href="#i-admin"/></svg>My name</h2>
+        <input id="myName" autocomplete="off" placeholder="Full name">
+        <button class="btn full" style="margin-top:8px" onclick="saveMyName()">Change my name</button>
+      </div>
       <div class="card hide" id="secCard">
         <h2><svg class="i"><use href="#i-users"/></svg>Sections</h2>
         <p class="hint">One section per line, then a colon and its classes.<br>Example: Primary: 1, 2, 3, 4, 5</p>
@@ -740,7 +799,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
 
       <div class="card">
         <h2><svg class="i"><use href="#i-info"/></svg>About</h2>
-        <p class="hint" style="margin:0">People School Sujawal City Campus PSP<br>Attendance Pro, version 2<br>Designed and developed by Shahwaiz Hassan Daheri</p>
+        <p class="hint" style="margin:0">People School Sujawal City Campus PSP<br>Attendance Pro, version 2 (build 9)<br>Designed and developed by Shahwaiz Hassan Daheri</p>
       </div>
     </div>
 
@@ -772,7 +831,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
     <div><label for="fPhone">Parent WhatsApp no.</label><input id="fPhone" type="tel" inputmode="numeric" placeholder="03XX XXXXXXX" autocomplete="off"></div>
   </div>
   <p class="hint" id="fHint">Numbers starting with 0 are saved as 92 automatically.</p>
-  <div id="fExtra"><label for="fDob">Date of birth</label><input id="fDob" type="date">
+  <div id="fExtra"><label for="fGr">GR No.</label><input id="fGr" autocomplete="off">
+  <label for="fDob">Date of birth</label><input id="fDob" type="date">
   <label for="fFather">Father name</label><input id="fFather" autocomplete="off">
   <label for="fBform">B-Form / CNIC no.</label><input id="fBform" inputmode="numeric" placeholder="XXXXX-XXXXXXX-X" autocomplete="off">
   <label for="fAddr">Address</label><input id="fAddr" autocomplete="off"><div id="fXf"></div></div>
@@ -807,11 +867,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:var(--wall)
 
 <script>
 "use strict";
+window.__t0=Date.now();
 (function(){ function show(m){ try{ var d=document.getElementById("dbgBox"); if(!d){ d=document.createElement("div"); d.id="dbgBox"; d.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#b00020;color:#fff;font:12px/1.4 monospace;padding:8px;max-height:40%;overflow:auto;white-space:pre-wrap"; document.body.appendChild(d); } d.textContent+=m+"\n"; }catch(e){} }
 window.__dbg=show;
 window.addEventListener("error",function(e){ show("ERR: "+e.message+" (line "+e.lineno+")"); });
 window.addEventListener("unhandledrejection",function(e){ show("PROMISE: "+(e.reason&&e.reason.message||e.reason)); }); })();
-setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("out");setTimeout(function(){s.remove()},600);}},4000);
+setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("out");setTimeout(function(){s.remove()},600);}},6000);
 /* =====================================================================
    SETUP: paste your Firebase web-app config here (see SETUP.txt).
    While this is null the app runs in DEMO mode (one phone only).
@@ -1086,7 +1147,7 @@ function renderVisitor(d){
 function authMsg(e){
   const c=(e&&e.code)||"";
   if(/invalid-credential|wrong-password|user-not-found|invalid-login/.test(c)) return "Wrong username or password";
-  if(/email-already-in-use/.test(c)) return "This username is already activated. Use Log in.";
+  if(/email-already-in-use/.test(c)) return "This username is already used. If it was deleted, ask for a new username.";
   if(/weak-password/.test(c)) return "Password must be at least 6 characters";
   if(/network/.test(c)) return "No internet connection";
   if(/too-many/.test(c)) return "Too many attempts. Wait a few minutes.";
@@ -1186,7 +1247,7 @@ function route(){
   if(me.status==="approved"){
     startData();
     const first=!loggedOnce;
-    if(first){ loggedOnce=true; logAct("logged in"); curSub="home"; curTab=isAdmin()?"admin":"teacher"; }
+    if(first){ loggedOnce=true; logAct("logged in"); setTimeout(showWelcome,250); curSub="home"; curTab=isAdmin()?"admin":"teacher"; }
     showView("app"); applyRole();
     setTab(curTab);
     if(first&&curTab==="admin") subTab("home");
@@ -1201,7 +1262,7 @@ function applyRole(){
   $("tabALbl").textContent=isAdmin()?"Manage":"Account";
   $("subBar").classList.toggle("hide",!isAdmin());
   $("tplCard").classList.toggle("hide",!isAdmin());
-  $("sLog").classList.toggle("hide",!isPrin()); $("galCard").classList.toggle("hide",!isAdmin()); $("xfCard").classList.toggle("hide",!isAdmin()); $("secCard").classList.toggle("hide",!isPrin()); $("ciBtn").classList.toggle("hide",!isAdmin());
+  $("sLog").classList.toggle("hide",!isPrin()); $("galCard").classList.toggle("hide",!isAdmin()); $("xfCard").classList.toggle("hide",!isAdmin()); $("secCard").classList.toggle("hide",!isPrin()); $("nameCard").classList.toggle("hide",!isPrin()); $("ciBtn").classList.toggle("hide",!isAdmin());
   $("prinSet").classList.toggle("hide",!isPrin());
   $("fab").classList.toggle("hide",!(curTab==="teacher"&&canAddStudent()));
   const sel=$("nRole"), want=isPrin()?2:1;
@@ -1256,7 +1317,7 @@ function openSheet(id){
   $("fSaveTxt").textContent=s?"Save changes":"Add student";
   $("fName").value=s?s.name:""; $("fClass").value=s?s.cls:""; $("fPhone").value="";
   $("fPhone").placeholder=s?"Leave empty to keep the number":"03XX XXXXXXX";
-  const cd=(s&&S.cdoc[s.id])||{}; $("fFather").value=cd.father||""; $("fBform").value=cd.bform||""; $("fAddr").value=cd.addr||""; $("fDob").value=cd.dob||""; { const xx=cd.x||{}; $("fXf").innerHTML=xfList().map(l=>`<label>${esc(l)}</label><input data-xk="${xfKey(l)}" autocomplete="off" value="${esc(xx[xfKey(l)]||"")}">`).join(""); }
+  const cd=(s&&S.cdoc[s.id])||{}; $("fFather").value=cd.father||""; $("fBform").value=cd.bform||""; $("fAddr").value=cd.addr||""; $("fDob").value=cd.dob||""; $("fGr").value=cd.gr||""; { const xx=cd.x||{}; $("fXf").innerHTML=xfList().map(l=>`<label>${esc(l)}</label><input data-xk="${xfKey(l)}" autocomplete="off" value="${esc(xx[xfKey(l)]||"")}">`).join(""); }
   $("fExtra").classList.toggle("hide",!isAdmin());
   phoneHint();
   $("sheetBg").classList.add("open"); $("sheet").classList.add("open");
@@ -1272,7 +1333,7 @@ function phoneHint(){
 }
 $("fPhone").addEventListener("input",phoneHint);
 
-function details(){ const o={}; [["father","fFather"],["bform","fBform"],["addr","fAddr"]].forEach(([k,i])=>{ const v=$(i).value.trim(); if(v) o[k]=v; });
+function details(){ const o={}; [["gr","fGr"],["father","fFather"],["bform","fBform"],["addr","fAddr"]].forEach(([k,i])=>{ const v=$(i).value.trim(); if(v) o[k]=v; });
   const d=$("fDob").value; if(d) o.dob=d;
   const x={}; document.querySelectorAll("#fXf input").forEach(e=>{ const v=e.value.trim(); if(v) x[e.dataset.xk]=v; }); if(Object.keys(x).length) o.x=x; return o; }
 function saveStudent(){
@@ -1296,7 +1357,7 @@ function saveStudent(){
   const id=B.newId("students"), dt=details();
   B.set("students/"+id,{name,cls,by:me.id,bn:me.name,t:Date.now()},false).then(()=>B.set("contacts/"+id,Object.assign({phone},dt),false)).catch(netErr);
   logAct("added student "+name+" (Class "+cls+")");
-  $("fName").value=""; $("fPhone").value=""; $("fFather").value=""; $("fBform").value=""; $("fAddr").value=""; $("fDob").value=""; phoneHint(); $("fName").focus();
+  $("fName").value=""; $("fPhone").value=""; $("fFather").value=""; $("fBform").value=""; $("fAddr").value=""; $("fDob").value=""; $("fGr").value=""; phoneHint(); $("fName").focus();
   toast(name+" added to class "+cls);
 }
 
@@ -1519,6 +1580,7 @@ function applyTheme(){
 function setTheme(v){ store.set("PSP_theme",v); applyTheme(); renderSettings(); }
 function setBig(on){ store.set("PSP_big",on?"1":"0"); applyTheme(); }
 function renderSettings(){
+  if(isPrin()&&me&&document.activeElement!==$("myName")) $("myName").value=me.name||"";
   if(isPrin()&&document.activeElement!==$("secIn")) $("secIn").value=(((S.settings||{}).sec)||[]).join("\n");
   if(isAdmin()&&document.activeElement!==$("xfIn")) $("xfIn").value=xfList().join(", ");
   if(isAdmin()&&document.activeElement!==$("pcIn")) $("pcIn").value=((S.settings||{}).pc||[]).join(", ");
@@ -1583,6 +1645,16 @@ function createInvite(){
   $("nName").value=""; $("nUser").value="";
 }
 function approveUser(id){ const u=S.users.find(x=>x.id===id); if(!u||!canApprove()) return toast("Only the Principal can approve staff"); B.set("users/"+id,{status:"approved"},true).catch(netErr); logAct("approved "+u.name+" ("+ROLE[u.role]+")"); }
+function delStaff(id){
+  const u=S.users.find(x=>x.id===id); if(!u||!isPrin()) return;
+  if(!confirm("Delete "+u.name+" ("+ROLE[u.role]+") completely? They can no longer log in. Their username cannot be used again, so create a new username if they come back.")) return;
+  B.del("users/"+id).then(()=>B.del("invites/"+u.username)).then(()=>toast("Deleted")).catch(netErr);
+  logAct("deleted the "+ROLE[u.role]+" "+u.name);
+}
+function saveMyName(){
+  const n=$("myName").value.trim().replace(/\s+/g," "); if(n.length<2) return toast("Write the full name");
+  B.set("users/"+me.id,{name:n},true).then(()=>toast("Name changed")).catch(netErr);
+}
 function setStatus(id,st){
   const u=S.users.find(x=>x.id===id); if(!u) return;
   if(st==="blocked"&&!confirm("Block "+u.name+"? They will not be able to open the app.")) return;
@@ -1635,6 +1707,7 @@ function renderStaffList(){
     ${isPrin()&&u.role==="admin"&&u.status==="approved"?`<button class="btn sec sm" onclick="setSections('${u.id}')">Sections</button>`:""}
     ${isAdmin()&&u.role==="teacher"&&u.status==="approved"?`<button class="btn sec sm" onclick="setClasses('${u.id}')">Classes</button>`:""}
     ${isPrin()&&canManage(u)&&u.status==="approved"?`<button class="btn sec sm" onclick="setRole('${u.id}','${u.role==="admin"?"teacher":"admin"}')">${u.role==="admin"?"Make Teacher":"Make Admin"}</button>`:""}
+    ${isPrin()&&canManage(u)?`<button class="btn bad sm" onclick="delStaff('${u.id}')">Delete</button>`:""}
     ${canManage(u)&&u.status==="approved"?`<button class="btn bad sm" onclick="setStatus('${u.id}','blocked')">Block</button>`:""}
     ${canManage(u)&&u.status==="blocked"?`<button class="btn sec sm" onclick="setStatus('${u.id}','approved')">Allow</button>`:""}
   </div>`);
@@ -1678,6 +1751,48 @@ function exportCSV(){
   logAct("downloaded the attendance report of "+$("rMonth").value);
 }
 
+/* welcome */
+let wlT=0;
+function showWelcome(){
+  const w=$("welcome"); if(!w||!me) return;
+  $("wlRole").textContent=({principal:"Principal",admin:"Admin",teacher:"Teacher"})[me.role]||"";
+  $("wlName").innerHTML=[...String(me.name||"")].map((c,i)=>`<span style="animation-delay:${(.55+i*.05).toFixed(2)}s">${c===" "?"&nbsp;":esc(c)}</span>`).join("");
+  w.style.display="flex"; w.classList.remove("go"); void w.offsetWidth; w.classList.add("go");
+  clearTimeout(wlT); wlT=setTimeout(()=>{ w.style.display="none"; w.classList.remove("go"); },3400);
+}
+/* class report */
+let sumOpen=false;
+function lastEntry(s){ const es=Object.entries(s.prog||{}).sort((a,b)=>b[0].localeCompare(a[0])); return es[0]?{k:es[0][0],e:es[0][1]}:null; }
+function sumRows(cls){ return S.students.filter(s=>s.cls===cls).sort(sortStu).map(s=>({s,l:lastEntry(s)})); }
+function toggleSum(){ sumOpen=!sumOpen; renderSum(); }
+function renderSum(){
+  $("pgSum").classList.toggle("hide",!sumOpen); if(!sumOpen) return;
+  const cls=$("pgCls").value, cats=prCats(), rows=sumRows(cls);
+  $("pgSubmit").classList.toggle("hide",!(me&&me.role==="teacher")); $("pgPar").classList.toggle("hide",!isAdmin());
+  const sub=rows.map(x=>x.s.prSub).filter(Boolean).sort((a,b)=>b.t-a.t)[0];
+  const left=rows.filter(x=>x.l&&!x.l.e.sent&&S.contacts[x.s.id]).length;
+  $("pgSub").textContent=(sub?"Sent to the Principal/Admin by "+sub.bn+" on "+fmtDob(new Date(sub.t).toISOString().slice(0,10))+". ":"Not sent to the Principal/Admin yet. ")+(isAdmin()?left+" parent message(s) left to send.":"");
+  $("pgTbl").innerHTML=rows.length?`<table class="ci"><thead><tr><th>#</th><th>Name</th>${cats.map(c=>`<th>${esc(c)}</th>`).join("")}<th>Overall</th></tr></thead><tbody>${rows.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.s.name)}</td>${cats.map(c=>`<td>${x.l&&x.l.e.r&&x.l.e.r[c]?PR_LV[x.l.e.r[c]-1]:""}</td>`).join("")}<td><b>${x.l?(PR_LV[Math.round(prAvg(x.l.e.r))-1]||"")+" ("+prAvg(x.l.e.r).toFixed(1)+")":""}</b></td></tr>`).join("")}</tbody></table>`:`<div class="empty">No students.</div>`;
+}
+function sumText(cls){
+  const rows=sumRows(cls); return SCHOOL+"\nClass "+cls+" ki progress report\n\n"+rows.map((x,i)=>(i+1)+". "+x.s.name+": "+(x.l?LV_UR[Math.round(prAvg(x.l.e.r))-1]+" ("+prAvg(x.l.e.r).toFixed(1)+"/4)":"report nahi bani")).join("\n");
+}
+function shareSum(){ const cls=$("pgCls").value; if(!cls) return; const u="https://wa.me/?text="+encodeURIComponent(sumText(cls)); const w=window.open(u,"_blank"); if(!w) location.href=u; }
+function sumCsv(){
+  const cls=$("pgCls").value; if(!cls) return; const cats=prCats(), q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const lines=[["Name"].concat(cats,["Overall"])].concat(sumRows(cls).map(x=>[x.s.name].concat(cats.map(c=>x.l&&x.l.e.r&&x.l.e.r[c]?PR_LV[x.l.e.r[c]-1]:""),[x.l?prAvg(x.l.e.r).toFixed(1):""])));
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["\ufeff"+lines.map(r=>r.map(q).join(",")).join("\r\n")],{type:"text/csv"})); a.download="Progress-"+cls+".csv"; document.body.appendChild(a); a.click(); a.remove();
+}
+function submitSum(){
+  const cls=$("pgCls").value, rows=sumRows(cls); if(!rows.length) return;
+  Promise.all(rows.map(x=>B.set("students/"+x.s.id,{prSub:{t:Date.now(),by:me.id,bn:me.name}},true))).then(()=>{ toast("Sent to the Principal/Admin"); logAct("sent the progress report of Class "+cls+" to the Principal/Admin"); }).catch(netErr);
+}
+function sendNextPr(){
+  const cls=$("pgCls").value, x=sumRows(cls).find(r=>r.l&&!r.l.e.sent&&S.contacts[r.s.id]);
+  if(!x) return toast("All parents are informed");
+  const u=prWa(x.s,x.l.k); B.set("students/"+x.s.id,{prog:{[x.l.k]:{sent:true}}},true).catch(netErr); logAct("sent a progress report of "+x.s.name+" to the parent");
+  const w=window.open(u,"_blank"); if(!w) location.href=u;
+}
 /* progress tab */
 function renderProgTab(){
   if($("prSheet").style.display==="flex") return;
@@ -1688,6 +1803,7 @@ function renderProgTab(){
     const es=Object.entries(s.prog||{}).sort((a,b)=>b[0].localeCompare(a[0])), e=es[0]&&es[0][1], a=e?prAvg(e.r):0;
     return `<div class="stu">${avatar(s.name)}<div class="info"><div class="nm">${esc(s.name)}</div><div class="meta">${e?`<span class="tag ${a>=2.5?"sent":a>=1.5?"pend":"bl"}">${PR_LV[Math.round(a)-1]||"-"} (${a.toFixed(1)}/4)</span>${esc(fmtDob(e.d))}`:`<span class="tag pend">No report yet</span>`}</div></div><button class="btn sec sm" onclick="openPr('${s.id}')">Report</button></div>`;
   }).join("")||`<div class="empty">${me&&me.role==="teacher"?"No class is given to you yet. Ask the Principal.":"No students yet."}</div>`;
+  renderSum();
 }
 /* progress report */
 const prCats=()=>{ const c=(S.settings||{}).pc; return c&&c.length?c.slice(0,12):PR_CATS; };
@@ -1809,8 +1925,8 @@ const norm=v=>String(v||"").trim().toLowerCase();
 const xfList=()=>(((S.settings||{}).xf)||[]).slice(0,8);
 const xfKey=l=>norm(l).replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"f";
 const fmtDob=v=>v?String(v).split("-").reverse().join("-"):"";
-function ciHead(){ return ["Name","Father name","B-Form / CNIC","Date of birth","Address"].concat(xfList()); }
-function ciRows(cls){ return S.students.filter(s=>s.cls===cls).sort(sortStu).map(s=>{ const c=S.cdoc[s.id]||{}, x=c.x||{}; return [s.name,c.father||"",c.bform||"",fmtDob(c.dob),c.addr||""].concat(xfList().map(l=>x[xfKey(l)]||"")); }); }
+function ciHead(){ return ["GR No","Name","Father name","B-Form / CNIC","Date of birth","Address"].concat(xfList()); }
+function ciRows(cls){ return S.students.filter(s=>s.cls===cls).sort(sortStu).map(s=>{ const c=S.cdoc[s.id]||{}, x=c.x||{}; return [c.gr||"",s.name,c.father||"",c.bform||"",fmtDob(c.dob),c.addr||""].concat(xfList().map(l=>x[xfKey(l)]||"")); }); }
 function toggleCI(){ $("ciCard").classList.toggle("hide"); renderCI(); }
 function renderCI(){
   const sel=$("ciCls"), cur=sel.value, cl=classes();
@@ -1889,7 +2005,7 @@ function renderRes(){
   if(!n||!(tot>0)||!cls){ $("rList").innerHTML=`<div class="empty">${ico("chart")}Write the exam name and total marks first.</div>`; $("rHint").textContent=""; return; }
   const list=S.students.filter(s=>s.cls===cls).sort(sortStu);
   const pub=S.rpub.find(x=>x.id===key+"_"+resKey(cls));
-  $("rPubBtn").textContent=pub?"Update on visitor page":"Show to visitors";
+  $("rPubBtn").textContent=pub?"Update on visitor page":"Show to visitors"; $("rUnBtn").classList.toggle("hide",!pub);
   $("rHint").textContent=pub?"Visible to parents on the visitor page (they need the exact student name).":"Enter marks, then send to parents or show on the visitor page.";
   $("rList").innerHTML=list.map(s=>{
     const r=resOf(s.id,key), pc=r?Math.round(r.o/tot*1000)/10:null, url=r?waRes(s,r):"";
@@ -1918,6 +2034,7 @@ function sendNextRes(){
   const url=waRes(s,resOf(s.id,key)); markResSent(s.id); logAct("sent the "+n+" result of "+s.name+" to the parent");
   const w=window.open(url,"_blank"); if(!w) location.href=url;
 }
+function unpubRes(){ const {key,cls,n}=resCtx(); if(!key||!confirm("Remove this result from the visitor page?")) return; B.del("results_pub/"+key+"_"+resKey(cls)).then(()=>toast("Removed from visitors")).catch(netErr); logAct("removed the "+n+" result of Class "+cls+" from visitors"); }
 function pubRes(){
   const {n,tot,cls,key}=resCtx(); if(!key||!(tot>0)) return toast("Write the exam name and total marks");
   const rows=S.students.filter(s=>s.cls===cls).map(s=>({s,r:resOf(s.id,key)})).filter(x=>x.r).map(x=>({n:x.s.name,o:x.r.o}));
@@ -1969,7 +2086,7 @@ window.addEventListener("error",e=>{ if(e&&e.error&&!crashed){ crashed=true; $("
 
 /* ---------- start ---------- */
 let splashGone=false;
-function hideSplash(){ if(splashGone) return; splashGone=true; setTimeout(()=>{ const s=$("splash"); if(s){ s.classList.add("out"); setTimeout(()=>s.remove(),600); } },900); }
+function hideSplash(){ if(splashGone) return; splashGone=true; const wait=Math.max(300,3300-(Date.now()-(window.__t0||0))); setTimeout(()=>{ const s=$("splash"); if(s){ s.classList.add("out"); setTimeout(()=>s.remove(),600); } },wait); }
 async function boot(){
   applyTheme();
   $("connNote").classList.add("hide");
