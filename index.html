@@ -127,6 +127,7 @@ main{flex:1;width:100%;max-width:640px;margin:0 auto;padding:14px 12px 96px}
 #zoom{position:fixed;inset:0;z-index:400;background:#000d;display:flex;align-items:center;justify-content:center;padding:14px;flex-direction:column;color:#fff;text-align:center}
 #zoom img{max-width:100%;max-height:80%;border-radius:10px}
 .dir{display:flex;gap:12px;align-items:center}.dir img{width:78px;height:78px;border-radius:50%;object-fit:cover;flex:none}
+.tblw{overflow-x:auto;margin-top:8px}.ci{border-collapse:collapse;font-size:12.5px;min-width:100%}.ci th,.ci td{border:1px solid #8884;padding:6px 8px;text-align:left;white-space:nowrap}.ci th{background:#0b5a4722}
 /* visitor */
 .vhero{text-align:center;padding:6px 4px 14px}
 .vhero .crest{width:72px;height:72px}
@@ -332,7 +333,7 @@ footer b{color:#f3dfa6;font-weight:700}
 </svg>
 
 <!-- splash -->
-<div id="splash">
+<div id="splash"><div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;color:#fff8;font-size:12px">build 4</div>
   <svg class="crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="#fff"/><path d="M50 14 78 25v22c0 18-12 30-28 36C34 77 22 65 22 47V25z" fill="#0b5a47"/><path d="M37 47l10 10 18-20" fill="none" stroke="#c9a24d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
   <h2>People School Sujawal City Campus PSP</h2>
   <p>Attendance Pro</p>
@@ -546,6 +547,12 @@ footer b{color:#f3dfa6;font-weight:700}
     <div id="vStu" class="hide">
       <div class="card">
         <h2><svg class="i"><use href="#i-users"/></svg>All students <span id="stuCount" style="color:var(--mute);font-weight:500"></span></h2>
+        <button class="btn out full hide" id="ciBtn" style="margin:0 0 8px" onclick="toggleCI()"><svg class="i"><use href="#i-users"/></svg>Class info (all details)</button>
+        <div class="hide" id="ciCard" style="margin-bottom:10px">
+          <select id="ciCls" onchange="renderCI()"></select>
+          <div class="tblw" id="ciTbl"></div>
+          <div class="row" style="margin-top:8px"><button class="btn sec sm" onclick="ciCsv()">Download list (CSV)</button><button class="btn sec sm" onclick="window.print()">Print</button></div>
+        </div>
         <div class="search"><svg class="i"><use href="#i-search"/></svg><input id="sSearch" placeholder="Search name or class" oninput="renderStudents()"></div>
         <p class="hint" style="margin:0 0 8px" id="stuHint"></p>
         <button class="btn out full" style="margin:0 0 6px" id="numBtn" onclick="toggleNumbers()"><svg class="i"><use href="#i-eye"/></svg><span id="numBtnTxt">Show all numbers</span></button>
@@ -638,6 +645,12 @@ footer b{color:#f3dfa6;font-weight:700}
         <button class="btn full" onclick="saveTpl()">Save messages</button>
       </div>
 
+      <div class="card hide" id="xfCard">
+        <h2><svg class="i"><use href="#i-users"/></svg>Extra student details</h2>
+        <p class="hint">Write the extra things you want to keep for every student, separated by commas (up to 8).</p>
+        <input id="xfIn" placeholder="e.g. Religion, Blood group, Previous school">
+        <button class="btn full" style="margin-top:8px" onclick="saveXf()">Save</button>
+      </div>
       <div class="card hide" id="galCard">
         <h2><svg class="i"><use href="#i-star"/></svg>Photos for visitors</h2>
         <select id="gCat"><option value="school">School</option><option value="award">Student award</option><option value="function">Function / event</option></select>
@@ -718,9 +731,10 @@ footer b{color:#f3dfa6;font-weight:700}
     <div><label for="fPhone">Parent WhatsApp no.</label><input id="fPhone" type="tel" inputmode="numeric" placeholder="03XX XXXXXXX" autocomplete="off"></div>
   </div>
   <p class="hint" id="fHint">Numbers starting with 0 are saved as 92 automatically.</p>
-  <div id="fExtra"><label for="fFather">Father name</label><input id="fFather" autocomplete="off">
+  <div id="fExtra"><label for="fDob">Date of birth</label><input id="fDob" type="date">
+  <label for="fFather">Father name</label><input id="fFather" autocomplete="off">
   <label for="fBform">B-Form / CNIC no.</label><input id="fBform" inputmode="numeric" placeholder="XXXXX-XXXXXXX-X" autocomplete="off">
-  <label for="fAddr">Address</label><input id="fAddr" autocomplete="off"></div>
+  <label for="fAddr">Address</label><input id="fAddr" autocomplete="off"><div id="fXf"></div></div>
   <button class="btn full" id="fSave" onclick="saveStudent()"><svg class="i"><use href="#i-check"/></svg><span id="fSaveTxt">Add student</span></button>
 </div>
 
@@ -728,6 +742,10 @@ footer b{color:#f3dfa6;font-weight:700}
 
 <script>
 "use strict";
+(function(){ function show(m){ try{ var d=document.getElementById("dbgBox"); if(!d){ d=document.createElement("div"); d.id="dbgBox"; d.style.cssText="position:fixed;left:0;right:0;bottom:0;z-index:99999;background:#b00020;color:#fff;font:12px/1.4 monospace;padding:8px;max-height:40%;overflow:auto;white-space:pre-wrap"; document.body.appendChild(d); } d.textContent+=m+"\n"; }catch(e){} }
+window.__dbg=show;
+window.addEventListener("error",function(e){ show("ERR: "+e.message+" (line "+e.lineno+")"); });
+window.addEventListener("unhandledrejection",function(e){ show("PROMISE: "+(e.reason&&e.reason.message||e.reason)); }); })();
 setTimeout(function(){var s=document.getElementById("splash");if(s){s.classList.add("out");setTimeout(function(){s.remove()},600);}},4000);
 /* =====================================================================
    SETUP: paste your Firebase web-app config here (see SETUP.txt).
@@ -890,7 +908,7 @@ const normUser=v=>String(v||"").trim().toLowerCase();
 const validUser=u=>/^[a-z0-9._-]{3,20}$/.test(u);
 
 /* ---------- state ---------- */
-const S={gal:[],students:[],contacts:{},cdoc:{},rpub:[],users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null,pub:null};
+const S={allStu:[],gal:[],students:[],contacts:{},cdoc:{},rpub:[],users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null,pub:null};
 let B=null, me=null, setupDone=true, authBusy=false, loggedOnce=false;
 let ownUnsub=null, unsubs=[], dayWatch={}, monthKey="", monthUnsub=null, started=false;
 let curTab="teacher", curSub="home", editId=null, revealed={}, authRole="teacher", authModeV="login", numbersOn=false, numTimer=null, curView="";
@@ -1007,8 +1025,13 @@ function authMsg(e){
   if(/network/.test(c)) return "No internet connection";
   if(/too-many/.test(c)) return "Too many attempts. Wait a few minutes.";
   if(/operation-not-allowed/.test(c)) return "Email/Password login is not turned on in Firebase";
-  if(/permission/.test(c)) return "Not allowed. Ask the school admin.";
-  return "Something went wrong. Try again.";
+  if(/configuration-not-found/.test(c)){ try{window.__dbg("AUTH: "+c);}catch(_){} return "Firebase Authentication is not started. In Firebase open Build > Authentication > Get started."; }
+  if(/api-key|invalid-app|app-not-authorized/.test(c)){ try{window.__dbg("AUTH: "+c);}catch(_){} return "Firebase API key or app settings are wrong. Check firebaseConfig."; }
+  if(/unauthorized-domain/.test(c)){ try{window.__dbg("AUTH: "+c);}catch(_){} return "Add ayaznaaz449-wq.github.io in Firebase > Authentication > Settings > Authorized domains."; }
+  if(/admin-restricted|blocking|quota/.test(c)){ try{window.__dbg("AUTH: "+c);}catch(_){} return "Firebase blocked this sign up. Check Authentication settings."; }
+  if(/permission/.test(c)){ try{window.__dbg("RULES: "+c+" "+((e&&e.message)||""));}catch(_){} return "Firebase rules blocked this. Check RULES.txt is published."; }
+  try{ window.__dbg("ERROR code="+c+" msg="+((e&&e.message)||e)); }catch(_){}
+  return "Something went wrong ("+(c||"no code")+")";
 }
 function busy(id,on){ const b=$(id); if(b) b.disabled=!!on; }
 async function doLogin(){
@@ -1085,7 +1108,7 @@ function handleAuth(a){
       if(!authBusy){ $("pendTitle").textContent="No access"; $("pendTxt").textContent="This account has no school profile. Log out and ask the admin."; showView("pend"); }
       return;
     }
-    me=d; route();
+    me=d; applyStu(); route();
   },()=>{});
 }
 function route(){
@@ -1112,7 +1135,7 @@ function applyRole(){
   $("tabALbl").textContent=isAdmin()?"Manage":"Account";
   $("subBar").classList.toggle("hide",!isAdmin());
   $("tplCard").classList.toggle("hide",!isAdmin());
-  $("sLog").classList.toggle("hide",!isPrin()); $("galCard").classList.toggle("hide",!isAdmin());
+  $("sLog").classList.toggle("hide",!isPrin()); $("galCard").classList.toggle("hide",!isAdmin()); $("xfCard").classList.toggle("hide",!isAdmin()); $("ciBtn").classList.toggle("hide",!isAdmin());
   $("prinSet").classList.toggle("hide",!isPrin());
   $("fab").classList.toggle("hide",!(curTab==="teacher"&&canAddStudent()));
   const sel=$("nRole"), want=isPrin()?2:1;
@@ -1124,7 +1147,7 @@ function applyRole(){
 function startData(){
   if(started) return; started=true;
   const err=()=>{};
-  unsubs.push(B.listenCol("students",a=>{ S.students=a; rerender(); },{},err));
+  unsubs.push(B.listenCol("students",a=>{ S.allStu=a; applyStu(); rerender(); },{},err));
   unsubs.push(B.listenDoc("config/settings",d=>{ S.settings=d||{}; rerender(); },err));
   unsubs.push(B.listenDoc("config/perms",d=>{ S.perms=d||{}; applyRole(); rerender(); },err));
   if(isPrin()) unsubs.push(B.listenDoc("config/public",d=>{ S.pubDoc=d||{}; rerender(); },err));
@@ -1140,7 +1163,7 @@ function startData(){
 function stopData(){
   unsubs.forEach(f=>{ try{ f(); }catch(e){} }); unsubs=[]; dayWatch={};
   if(monthUnsub){ try{ monthUnsub(); }catch(e){} monthUnsub=null; } monthKey=""; started=false;
-  Object.assign(S,{gal:[],cdoc:{},rpub:[],students:[],contacts:{},users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null});
+  Object.assign(S,{allStu:[],gal:[],cdoc:{},rpub:[],students:[],contacts:{},users:[],invites:[],logs:[],att:{},tatt:{},msgs:{},month:[],settings:{},perms:{},pubDoc:null});
   revealed={}; numbersOn=false; clearTimeout(numTimer);
 }
 function watchDay(d){
@@ -1167,7 +1190,7 @@ function openSheet(id){
   $("fSaveTxt").textContent=s?"Save changes":"Add student";
   $("fName").value=s?s.name:""; $("fClass").value=s?s.cls:""; $("fPhone").value="";
   $("fPhone").placeholder=s?"Leave empty to keep the number":"03XX XXXXXXX";
-  const cd=(s&&S.cdoc[s.id])||{}; $("fFather").value=cd.father||""; $("fBform").value=cd.bform||""; $("fAddr").value=cd.addr||"";
+  const cd=(s&&S.cdoc[s.id])||{}; $("fFather").value=cd.father||""; $("fBform").value=cd.bform||""; $("fAddr").value=cd.addr||""; $("fDob").value=cd.dob||""; { const xx=cd.x||{}; $("fXf").innerHTML=xfList().map(l=>`<label>${esc(l)}</label><input data-xk="${xfKey(l)}" autocomplete="off" value="${esc(xx[xfKey(l)]||"")}">`).join(""); }
   $("fExtra").classList.toggle("hide",!isAdmin());
   phoneHint();
   $("sheetBg").classList.add("open"); $("sheet").classList.add("open");
@@ -1183,8 +1206,11 @@ function phoneHint(){
 }
 $("fPhone").addEventListener("input",phoneHint);
 
-function details(){ const o={}; [["father","fFather"],["bform","fBform"],["addr","fAddr"]].forEach(([k,i])=>{ const v=$(i).value.trim(); if(v) o[k]=v; }); return o; }
+function details(){ const o={}; [["father","fFather"],["bform","fBform"],["addr","fAddr"]].forEach(([k,i])=>{ const v=$(i).value.trim(); if(v) o[k]=v; });
+  const d=$("fDob").value; if(d) o.dob=d;
+  const x={}; document.querySelectorAll("#fXf input").forEach(e=>{ const v=e.value.trim(); if(v) x[e.dataset.xk]=v; }); if(Object.keys(x).length) o.x=x; return o; }
 function saveStudent(){
+  if(me&&me.role==="teacher"&&!(me.cls||[]).map(norm).includes(norm($("fClass").value))) return toast("You can only add students to your own class");
   const name=$("fName").value.trim().replace(/\s+/g," "), cls=$("fClass").value.trim().toUpperCase(), raw=$("fPhone").value.trim(), phone=fixPhone(raw);
   if(!name) return toast("Enter the student's name");
   if(!cls) return toast("Enter the class");
@@ -1204,7 +1230,7 @@ function saveStudent(){
   const id=B.newId("students"), dt=details();
   B.set("students/"+id,{name,cls,by:me.id,bn:me.name,t:Date.now()},false).then(()=>B.set("contacts/"+id,Object.assign({phone},dt),false)).catch(netErr);
   logAct("added student "+name+" (Class "+cls+")");
-  $("fName").value=""; $("fPhone").value=""; $("fFather").value=""; $("fBform").value=""; $("fAddr").value=""; phoneHint(); $("fName").focus();
+  $("fName").value=""; $("fPhone").value=""; $("fFather").value=""; $("fBform").value=""; $("fAddr").value=""; $("fDob").value=""; phoneHint(); $("fName").focus();
   toast(name+" added to class "+cls);
 }
 
@@ -1293,7 +1319,7 @@ function renderHome(){
     const arr=stu.filter(s=>s.cls===c), mk=arr.filter(s=>day[s.id]).length, pp=arr.filter(s=>day[s.id]&&day[s.id].s==="P").length;
     const st=mk===arr.length?["ok","Marked"]:mk?["pend",mk+"/"+arr.length]:["bl","Not marked"];
     return `<div class="crow"><div class="cn">Class ${esc(c)}</div><div class="cv">${pp}/${arr.length} present</div><span class="tag ${st[0]}">${st[1]}</span></div>`;
-  }).join(""):`<div class="empty">${ico("users")}No students yet. Add them in the Students tab.</div>`;
+  }).join(""):`<div class="empty">${ico("users")}${me&&me.role==="teacher"?"No class is given to you yet. Ask the Principal.":"No students yet. Add them in the Students tab."}</div>`;
   const need=stu.filter(s=>day[s.id]&&(day[s.id].s==="A"||day[s.id].s==="L")), inf=need.filter(s=>sentInfo(d,s)).length;
   $("hParents").innerHTML=need.length?`<div class="crow"><div class="cn">Absent or on leave today</div><div class="cv">${need.length}</div></div><div class="crow"><div class="cn">Parents informed</div><div class="cv">${inf}</div></div><div class="crow"><div class="cn">Still to inform</div><div class="cv"><b>${need.length-inf}</b></div></div>`:`<div class="empty">${ico("checkall")}Nobody is absent or on leave so far today.</div>`;
   const tday=S.tatt[d]||{}, staff=S.users.filter(u=>u.status==="approved"&&u.role!=="principal");
@@ -1374,6 +1400,7 @@ function saveTpl(){
 
 /* students (numbers hidden unless asked) */
 function renderStudents(){
+  if(!$("ciCard").classList.contains("hide")) renderCI();
   const q=$("sSearch").value.trim().toLowerCase();
   $("stuCount").textContent="("+S.students.length+")";
   $("numBtnTxt").textContent=numbersOn?"Hide all numbers":"Show all numbers";
@@ -1424,6 +1451,7 @@ function applyTheme(){
 function setTheme(v){ store.set("PSP_theme",v); applyTheme(); renderSettings(); }
 function setBig(on){ store.set("PSP_big",on?"1":"0"); applyTheme(); }
 function renderSettings(){
+  if(isAdmin()&&document.activeElement!==$("xfIn")) $("xfIn").value=xfList().join(", ");
   if(isAdmin()&&!$("gList").contains(document.activeElement)) $("gList").innerHTML=S.gal.map(g=>`<figure><img src="${g.img}" alt=""><button class="btn bad ico gx" onclick="delPhoto('${g.id}')">${ico("trash")}</button><figcaption>${esc(CATS[g.cat]||"")}${g.cap?": "+esc(g.cap):""}</figcaption></figure>`).join("");
   const th=store.get("PSP_theme")||"auto";
   document.querySelectorAll("#themeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.v===th));
@@ -1531,7 +1559,8 @@ function renderStaffList(){
   const have=new Set(S.users.map(u=>u.username));
   const unused=S.invites.filter(i=>!have.has(i.username));
   const rows=S.users.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(u=>`<div class="stu">${avatar(u.name)}
-    <div class="info"><div class="nm">${esc(u.name)}</div><div class="meta"><span class="tag rl">${ROLE[u.role]||esc(u.role)}</span>${esc(u.username)}<span class="tag ${u.status==="approved"?"sent":u.status==="pending"?"pend":"bl"}">${u.status==="approved"?"Active":u.status==="pending"?"Waiting":"Blocked"}</span></div></div>
+    <div class="info"><div class="nm">${esc(u.name)}</div><div class="meta"><span class="tag rl">${ROLE[u.role]||esc(u.role)}</span>${esc(u.username)}${u.role==="teacher"?`<span class="tag rl">${esc((u.cls||[]).join(", ")||"No class")}</span>`:""}<span class="tag ${u.status==="approved"?"sent":u.status==="pending"?"pend":"bl"}">${u.status==="approved"?"Active":u.status==="pending"?"Waiting":"Blocked"}</span></div></div>
+    ${isAdmin()&&u.role==="teacher"&&u.status==="approved"?`<button class="btn sec sm" onclick="setClasses('${u.id}')">Classes</button>`:""}
     ${isPrin()&&canManage(u)&&u.status==="approved"?`<button class="btn sec sm" onclick="setRole('${u.id}','${u.role==="admin"?"teacher":"admin"}')">${u.role==="admin"?"Make Teacher":"Make Admin"}</button>`:""}
     ${canManage(u)&&u.status==="approved"?`<button class="btn bad sm" onclick="setStatus('${u.id}','blocked')">Block</button>`:""}
     ${canManage(u)&&u.status==="blocked"?`<button class="btn sec sm" onclick="setStatus('${u.id}','approved')">Allow</button>`:""}
@@ -1576,6 +1605,39 @@ function exportCSV(){
   logAct("downloaded the attendance report of "+$("rMonth").value);
 }
 
+/* class info */
+const norm=v=>String(v||"").trim().toLowerCase();
+const xfList=()=>(((S.settings||{}).xf)||[]).slice(0,8);
+const xfKey=l=>norm(l).replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"f";
+const fmtDob=v=>v?String(v).split("-").reverse().join("-"):"";
+function ciHead(){ return ["Name","Father name","B-Form / CNIC","Date of birth","Address"].concat(xfList()); }
+function ciRows(cls){ return S.students.filter(s=>s.cls===cls).sort(sortStu).map(s=>{ const c=S.cdoc[s.id]||{}, x=c.x||{}; return [s.name,c.father||"",c.bform||"",fmtDob(c.dob),c.addr||""].concat(xfList().map(l=>x[xfKey(l)]||"")); }); }
+function toggleCI(){ $("ciCard").classList.toggle("hide"); renderCI(); }
+function renderCI(){
+  const sel=$("ciCls"), cur=sel.value, cl=classes();
+  sel.innerHTML=cl.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("");
+  const rows=sel.value?ciRows(sel.value):[];
+  $("ciTbl").innerHTML=rows.length?`<table class="ci"><thead><tr><th>#</th>${ciHead().map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table>`:`<div class="empty">No students in this class.</div>`;
+}
+function ciCsv(){
+  const cls=$("ciCls").value; if(!cls) return;
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  const csv="\ufeff"+[ciHead()].concat(ciRows(cls)).map(r=>r.map(q).join(",")).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="Class-"+cls+".csv"; document.body.appendChild(a); a.click(); a.remove();
+  logAct("downloaded the info list of Class "+cls);
+}
+function saveXf(){
+  const arr=$("xfIn").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,8);
+  B.set("config/settings",{xf:arr},true).then(()=>toast("Saved")).catch(netErr);
+}
+/* teacher classes */
+function applyStu(){ const m=(me&&me.role==="teacher")?(me.cls||[]).map(norm):null; S.students=m?(S.allStu||[]).filter(s=>m.includes(norm(s.cls))):(S.allStu||[]); }
+function setClasses(id){
+  const u=S.users.find(x=>x.id===id); if(!u) return;
+  const v=prompt("Classes for "+u.name+" (separate with commas). Example: 10-A, 10-B",(u.cls||[]).join(", ")); if(v===null) return;
+  const arr=v.split(",").map(x=>x.trim()).filter(Boolean);
+  B.set("users/"+id,{cls:arr},true).then(()=>toast("Saved")).catch(netErr); logAct("set the classes of "+u.name+": "+(arr.join(", ")||"none"));
+}
 /* photos */
 const CATS={school:"School",award:"Award",function:"Function"};
 let dPhotoData="", galVis=[], galCat="";
