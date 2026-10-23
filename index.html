@@ -361,6 +361,18 @@ main{padding:18px 14px 96px}
 .vhero h2{color:var(--g1)}
 @media(min-width:900px){#visitorView{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}#visitorView>*{margin:0}#visitorView>.card:first-child,#visitorView>button{grid-column:1/-1}}
 .ci th{background:var(--soft);color:var(--g2)}
+
+#vGal{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}#vGal img{aspect-ratio:4/3}
+#visitorView>.card{animation:vrise .8s ease both}
+#visitorView>.card:nth-child(2){animation-delay:.08s}#visitorView>.card:nth-child(3){animation-delay:.16s}#visitorView>.card:nth-child(4){animation-delay:.24s}#visitorView>.card:nth-child(5){animation-delay:.32s}
+@keyframes vrise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.vcredit{text-align:center;padding:18px 10px 6px;font-size:13px;color:var(--mute);animation:vrise 1s ease .5s both}
+.vcredit b{background:linear-gradient(90deg,var(--red),var(--gold),var(--g1),var(--red));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shim 4s linear infinite}
+@keyframes shim{to{background-position:300% 0}}
+#teacher.ro .tog,#teacher.ro [onclick="markAll()"]{pointer-events:none;opacity:.45}
+.rk{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.rk b{width:34px;text-align:center;color:var(--g1)}
+.mgc{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
 </style>
 </head>
 <body>
@@ -522,9 +534,13 @@ main{padding:18px 14px 96px}
       <div id="vInfo"></div>
     </div>
     <div class="card hide" id="vAdm"></div>
+    <div class="card hide" id="vTop"></div>
     <div class="card hide" id="vResCard"><h2><svg class="i"><use href="#i-star"/></svg>Check result</h2>
-      <select id="vResSel"></select><label for="vResName">Student full name</label><input id="vResName" autocomplete="off" onkeydown="if(event.key==='Enter')checkRes()">
-      <button class="btn full" style="margin-top:10px" onclick="checkRes()">Show result</button><p class="hint" id="vResOut" style="margin-top:10px"></p></div>
+      <p class="hint" id="vResNeed"></p>
+      <div id="vfC"><label for="vResCnic">Student B-Form / CNIC</label><input id="vResCnic" inputmode="numeric" autocomplete="off" placeholder="XXXXX-XXXXXXX-X"></div>
+      <div id="vfN"><label for="vResName">Student full name</label><input id="vResName" autocomplete="off"></div>
+      <div id="vfG"><label for="vResGr">GR No.</label><input id="vResGr" autocomplete="off"></div>
+      <button class="btn full" style="margin-top:10px" onclick="checkRes()">Show result</button><div id="vResOut" style="margin-top:12px"></div></div>
     <div class="card hide" id="vDir"></div>
     <div class="card">
       <h2><svg class="i"><use href="#i-info"/></svg>For parents</h2>
@@ -533,6 +549,7 @@ main{padding:18px 14px 96px}
     <div class="card hide" id="vGalCard"><h2><svg class="i"><use href="#i-star"/></svg>Gallery</h2>
       <div class="chips" id="vGalChips"></div><div class="gal" id="vGal"></div></div>
     <button class="btn out full" onclick="goLanding()"><svg class="i"><use href="#i-lock"/></svg>Staff login</button>
+    <div class="vcredit">Developed by <b>Lala Shahwaiz Hassan Daheri</b></div>
   </section>
 
   <!-- ================= WAITING ================= -->
@@ -582,21 +599,33 @@ main{padding:18px 14px 96px}
   <!-- ================= MANAGE ================= -->
   <section id="prog" class="hide">
     <div class="card">
-      <h2><svg class="i"><use href="#i-chart"/></svg>Progress reports</h2>
-      <p class="hint">Separate from attendance. Pick a class, then tap a student to write or read the report.</p>
+      <h2><svg class="i"><use href="#i-chart"/></svg>Reports</h2>
       <select id="pgCls" onchange="renderProgTab()"></select>
-      <button class="btn out full" style="margin:8px 0" onclick="toggleSum()">Whole class report</button>
-      <div class="hide" id="pgSum">
-        <p class="hint" id="pgSub"></p>
-        <div class="tblw" id="pgTbl"></div>
-        <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
-          <button class="btn wa sm" onclick="shareSum()">Share summary</button>
-          <button class="btn sec sm" onclick="sumCsv()">Download CSV</button>
-          <button class="btn sec sm hide" id="pgSubmit" onclick="submitSum()">Send to Principal/Admin</button>
-          <button class="btn wa sm hide" id="pgPar" onclick="sendNextPr()">Send to parents</button>
+      <div class="row" style="margin:8px 0"><button class="btn sm" id="pgM1" onclick="setRepMode(1)">Progress report</button><button class="btn sec sm" id="pgM2" onclick="setRepMode(2)">Results</button></div>
+      <div id="pgProg">
+        <p class="hint">Tap a student to write or read the progress report.</p>
+        <button class="btn out full" style="margin:0 0 8px" onclick="toggleSum()">Whole class report</button>
+        <div class="hide" id="pgSum">
+          <p class="hint" id="pgSub"></p>
+          <div class="tblw" id="pgTbl"></div>
+          <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap">
+            <button class="btn wa sm" onclick="shareSum()">Share summary</button>
+            <button class="btn sec sm" onclick="sumCsv()">Download CSV</button>
+            <button class="btn sec sm hide" id="pgSubmit" onclick="submitSum()">Send to Principal/Admin</button>
+            <button class="btn wa sm hide" id="pgPar" onclick="sendNextPr()">Send to parents</button>
+          </div>
         </div>
+        <div id="pgList"></div>
       </div>
-      <div id="pgList"></div>
+      <div class="hide" id="pgRes">
+        <label for="reExam">Exam</label><input id="reExam" list="reExamL" autocomplete="off" placeholder="Zero test, Mid term, Final..." oninput="renderRE()"><datalist id="reExamL"></datalist>
+        <label for="reSubs">Subjects and total marks</label><input id="reSubs" autocomplete="off" placeholder="Maths 100, English 100, Urdu 75" oninput="renderRE()">
+        <p class="hint">Pick a subject, then type the marks of every student one after another. Press Enter to jump to the next one.</p>
+        <div class="chips" id="reSubChips"></div>
+        <div id="reList"></div>
+        <button class="btn full" style="margin-top:10px" onclick="submitRes()">Send to Principal/Admin</button>
+        <p class="hint" id="reHint"></p>
+      </div>
     </div>
   </section>
 
@@ -633,6 +662,7 @@ main{padding:18px 14px 96px}
         <button class="dtile r" onclick="subTab('set')"><span class="di"><svg class="i"><use href="#i-set"/></svg></span>Settings<small>School, photos, sections</small></button>
         <button class="dtile y hide" id="dLog" onclick="subTab('log')"><span class="di"><svg class="i"><use href="#i-log"/></svg></span>Activity<small>Who did what</small></button>
       </div>
+      <div class="card hide" id="hInbox"></div>
       <div class="notice gold hide" id="hApprove"><div class="ic"><svg class="i"><use href="#i-clock"/></svg></div><div><b id="hApproveTxt"></b><button class="btn sm" style="margin-top:8px" onclick="subTab('staff')">Review now</button></div></div>
       <div class="card"><h2><svg class="i"><use href="#i-clip"/></svg>Classes today</h2><div id="hClasses"></div></div>
       <div class="card"><h2><svg class="i"><use href="#i-wa"/></svg>Parents</h2><div id="hParents"></div><button class="btn sec full" onclick="subTab('msg')">Open messages</button></div>
@@ -712,6 +742,7 @@ main{padding:18px 14px 96px}
         <h2><svg class="i"><use href="#i-cal"/></svg>Timetable</h2>
         <div class="row"><div><label for="ttCls">Class</label><select id="ttCls" onchange="renderTt()"></select></div>
         <div><label for="ttNp">Periods per day</label><input id="ttNp" type="number" inputmode="numeric" min="1" max="12" onchange="saveNp(this.value)"></div></div>
+        <label for="ttBrk">Break after period (numbers, comma separated)</label><input id="ttBrk" placeholder="e.g. 3" onchange="saveBrk(this.value)">
         <p class="hint">Tap a box to set the subject and the teacher.</p>
         <div class="tblw" id="ttGrid"></div>
       </div>
@@ -721,12 +752,20 @@ main{padding:18px 14px 96px}
     <div id="vRes" class="hide">
       <div class="card">
         <h2><svg class="i"><use href="#i-star"/></svg>Results</h2>
-        <label for="rExam">Exam name</label><input id="rExam" placeholder="e.g. Midterm 2026" oninput="renderRes()">
-        <div class="row"><div><label for="rTot">Total marks</label><input id="rTot" type="number" inputmode="numeric" placeholder="100" oninput="renderRes()"></div>
-        <div><label for="rCls">Class</label><select id="rCls" onchange="renderRes()"></select></div></div>
-        <div class="row" style="margin-top:10px"><button class="btn wa sm" onclick="sendNextRes()">Send next to parents</button><button class="btn bad sm hide" id="rUnBtn" onclick="unpubRes()">Remove from visitors</button><button class="btn sec sm" id="rPubBtn" onclick="pubRes()">Show to visitors</button></div>
-        <p class="hint" id="rHint"></p>
-        <div id="rList"></div>
+        <p class="hint">Teachers enter marks in Reports &gt; Results and send them here. You show them to visitors, send them to parents, or delete them.</p>
+        <div class="row"><div><label for="mgYear">Year</label><select id="mgYear" onchange="renderRes()"></select></div>
+        <div style="align-self:flex-end"><button class="btn sec sm" onclick="newYear()">New academic year</button></div></div>
+        <div id="mgList"></div>
+      </div>
+      <div class="card">
+        <h2><svg class="i"><use href="#i-set"/></svg>What visitors must enter</h2>
+        <p class="hint">A parent sees a result only after typing all the items you tick.</p>
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="rkC" style="width:auto"> B-Form / CNIC</label>
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="rkN" style="width:auto"> Student name</label>
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="rkG" style="width:auto"> GR No.</label>
+        <label style="display:flex;gap:10px;align-items:center;margin-top:10px"><input type="checkbox" id="posOn" style="width:auto"> Show the top 3 students to every visitor</label>
+        <label for="passPct" style="margin-top:8px">Pass marks (%)</label><input id="passPct" type="number" inputmode="numeric" placeholder="33">
+        <button class="btn full" style="margin-top:10px" onclick="saveRsSet()">Save</button>
       </div>
     </div>
 
@@ -786,6 +825,7 @@ main{padding:18px 14px 96px}
         <h2><svg class="i"><use href="#i-users"/></svg>Extra details</h2>
         <p class="hint">Write the extra things you want to keep for every student, separated by commas (up to 8).</p>
         <input id="xfIn" placeholder="e.g. Religion, Blood group, Previous school">
+        <label for="mfIn" style="margin-top:8px">Footer for parent messages</label><input id="mfIn" placeholder="e.g. School office: 03XX-XXXXXXX">
         <label for="pcIn" style="margin-top:8px">Progress report items</label><input id="pcIn" placeholder="e.g. Behaviour, Discipline, Education, Punctuality">
         <label for="tfIn" style="margin-top:8px">Extra teacher details</label><input id="tfIn" placeholder="e.g. CNIC, Phone, Qualification, Address">
         <button class="btn full" style="margin-top:8px" onclick="saveXf()">Save</button>
@@ -838,7 +878,7 @@ main{padding:18px 14px 96px}
 
       <div class="card">
         <h2><svg class="i"><use href="#i-info"/></svg>About</h2>
-        <p class="hint" style="margin:0">People School Sujawal City Campus PSP<br>Attendance Pro, version 2 (build 10)<br>Designed and developed by Shahwaiz Hassan Daheri</p>
+        <p class="hint" style="margin:0">People School Sujawal City Campus PSP<br>Attendance Pro, version 2 (build 11)<br>Designed and developed by Shahwaiz Hassan Daheri</p>
       </div>
     </div>
 
@@ -1092,7 +1132,7 @@ const F={t:"",a:"",r:""};
 function chips(boxId,key,after){
   const list=classes(); if(!list.includes(F[key])) F[key]="";
   const box=$(boxId);
-  box.innerHTML=[""].concat(list).map(c=>`<button class="chip ${F[key]===c?"on":""}" data-c="${esc(c)}">${c?"Class "+esc(c):"All classes"}</button>`).join("");
+  box.innerHTML=[""].concat(list).map(c=>`<button class="chip ${F[key]===c?"on":""}" data-c="${esc(c)}">${c?"Class "+esc(c)+" ("+cnt(c)+")":"All classes"}</button>`).join("");
   box.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{ F[key]=b.dataset.c; after(); });
   box.style.display=list.length?"":"none";
 }
@@ -1107,6 +1147,7 @@ const netErr=()=>toast("Could not save. Check internet or permission.");
 /* ---------- views ---------- */
 function showView(v){
   const app=v==="app";
+  if(!app){ try{ closeSheet(); }catch(e){} ["ttSheet","prSheet","tiSheet"].forEach(i=>{ if($(i)) $(i).style.display="none"; }); }
   $("landing").classList.toggle("hide",v!=="landing");
   $("mainBox").classList.toggle("hide",v==="landing");
   $("authView").classList.toggle("hide",v!=="auth");
@@ -1180,7 +1221,7 @@ function renderVisitor(d){
   if(d.time) rows.push(kv("clock","Timing",esc(d.time)));
   if(d.phone) rows.push(kv("phone","Contact",ph?`<a href="tel:+${ph}">${esc(d.phone)}</a> &middot; <a href="https://wa.me/${ph}" target="_blank" rel="noopener">WhatsApp</a>`:esc(d.phone)));
   $("vInfo").innerHTML=rows.join("");
-  $("vDir").classList.toggle("hide",!(d.dName||d.dMsg)); $("vDir").innerHTML=(d.dName||d.dMsg)?`<h2>${ico("shield")}From the Director</h2><div class="dir">${d.dPhoto?`<img src="${d.dPhoto}" alt="">`:""}<div><b>${esc(d.dName||"")}</b><p class="hint" style="margin:4px 0 0">${esc(d.dMsg||"")}</p></div></div>`:"";
+  $("vDir").classList.toggle("hide",!(d.dName||d.dMsg)); $("vDir").innerHTML=(d.dName||d.dMsg)?`<h2>${ico("shield")}From the Director</h2><div style="text-align:center">${d.dPhoto?`<img src="${d.dPhoto}" alt="" style="width:min(240px,75%);aspect-ratio:1;object-fit:cover;border-radius:20px;box-shadow:var(--shadow)">`:""}<div style="font-size:20px;font-weight:800;margin:14px 0 8px">${esc(d.dName||"")}</div><p style="margin:0;font-size:14.5px;line-height:1.7;text-align:left;color:var(--ink)">${esc(d.dMsg||"")}</p></div>`:"";
   $("vNotice").classList.toggle("hide",!d.notice); $("vNoticeTxt").textContent=d.notice||"";
 }
 function authMsg(e){
@@ -1402,6 +1443,7 @@ function saveStudent(){
 
 /* ---------- attendance (everyone) ---------- */
 function mark(id,status){
+  if(me&&me.role==="principal") return toast("The Principal can only view attendance");
   const d=$("tDate").value, cur=(S.att[d]||{})[id], s=stuById(id); if(!s) return;
   const clear=cur&&cur.s===status;
   const v=clear?DEL:{s:status,by:me.id,bn:me.name,t:Date.now()};
@@ -1409,6 +1451,7 @@ function mark(id,status){
   if(status!=="P"||clear) logAct(clear?"cleared the mark of "+s.name+" (Class "+s.cls+") on "+niceDate(d):"marked "+s.name+" (Class "+s.cls+") "+LBL[status]+" on "+niceDate(d));
 }
 function markAll(){
+  if(me&&me.role==="principal") return toast("The Principal can only view attendance");
   const d=$("tDate").value, day=S.att[d]||{}, marks={}; let n=0;
   S.students.filter(s=>!F.t||s.cls===F.t).forEach(s=>{ if(!day[s.id]){ marks[s.id]={s:"P",by:me.id,bn:me.name,t:Date.now()}; n++; } });
   if(!n) return toast("Everyone is already marked");
@@ -1416,6 +1459,7 @@ function markAll(){
   logAct("marked "+n+" students present"+(F.t?" in Class "+F.t:"")+" on "+niceDate(d)); toast(n+" students marked present");
 }
 function renderTeacher(){
+  $("teacher").classList.toggle("ro",!!(me&&me.role==="principal"));
   try{ renderTtTeacher(); }catch(e){}
   if(!$("tDate").value) $("tDate").value=todayStr();
   const d=$("tDate").value; watchDay(d);
@@ -1475,6 +1519,7 @@ function renderAdmin(){
 
 /* dashboard */
 function renderHome(){
+  try{ renderInbox(); }catch(e){}
   const d=todayStr(); watchDay(d);
   $("hGreet").innerHTML=ico("home")+"Assalam o Alaikum, "+esc(me.name);
   $("hDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
@@ -1624,6 +1669,7 @@ function renderSettings(){
   if(isPrin()&&me&&document.activeElement!==$("myName")) $("myName").value=me.name||"";
   if(isPrin()&&document.activeElement!==$("secIn")) $("secIn").value=(((S.settings||{}).sec)||[]).join("\n");
   if(isAdmin()&&document.activeElement!==$("xfIn")) $("xfIn").value=xfList().join(", ");
+  if(isAdmin()&&document.activeElement!==$("mfIn")) $("mfIn").value=((S.settings||{}).mf)||"";
   if(isAdmin()&&document.activeElement!==$("pcIn")) $("pcIn").value=((S.settings||{}).pc||[]).join(", ");
   if(isAdmin()&&document.activeElement!==$("tfIn")) $("tfIn").value=((S.settings||{}).tf||[]).join(", ");
   if(isAdmin()&&!$("gList").contains(document.activeElement)) $("gList").innerHTML=S.gal.map(g=>`<figure>${g.img?`<img src="${g.img}" alt="">`:`<div style="padding:14px 8px;font-size:12px">${esc(g.cap||"")}</div>`}<button class="btn bad ico gx" onclick="delPhoto('${g.id}')">${ico("trash")}</button><figcaption>${esc(CATS[g.cat]||"")}${g.cap?": "+esc(g.cap):""}</figcaption></figure>`).join("");
@@ -1837,8 +1883,9 @@ function sendNextPr(){
 /* progress tab */
 function renderProgTab(){
   if($("prSheet").style.display==="flex") return;
+  if(repMode===2){ const s0=$("pgCls"), c0=s0.value, l0=classes(); s0.innerHTML=l0.map(c=>clOpt(c,c0)).join(""); renderRE(); return; }
   const sel=$("pgCls"), cur=sel.value, cl=classes();
-  sel.innerHTML=cl.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("");
+  sel.innerHTML=cl.map(c=>clOpt(c,cur)).join("");
   const list=S.students.filter(s=>s.cls===sel.value).sort(sortStu);
   $("pgList").innerHTML=list.map(s=>{
     const es=Object.entries(s.prog||{}).sort((a,b)=>b[0].localeCompare(a[0])), e=es[0]&&es[0][1], a=e?prAvg(e.r):0;
@@ -1877,7 +1924,7 @@ function prMsg(s,k){
   const e=(s.prog||{})[k]; if(!e) return ""; const a=prAvg(e.r);
   return "Assalam o Alaikum.\n"+SCHOOL+" ki taraf se "+s.name+" (Class "+s.cls+") ki progress report, "+fmtDob(e.d)+":\n\n"
    +Object.entries(e.r||{}).filter(x=>x[1]>0).map(x=>(PR_UR[x[0]]||x[0])+": "+LV_UR[x[1]-1]).join("\n")
-   +"\n\nKul nateeja: "+LV_UR[Math.round(a)-1]+" ("+a.toFixed(1)+"/4)"+(e.n?"\nTeacher ka note: "+e.n:"")+"\n\nShukriya.";
+   +"\n\nKul nateeja: "+LV_UR[Math.round(a)-1]+" ("+a.toFixed(1)+"/4)"+(e.n?"\nTeacher ka note: "+e.n:"")+"\n\nShukriya."+(((S.settings||{}).mf)?"\n"+S.settings.mf:"");
 }
 function prWa(s,k){ const ph=S.contacts[s.id]; return ph?"https://wa.me/"+ph+"?text="+encodeURIComponent(prMsg(s,k)):"#"; }
 function prCopy(k){
@@ -1908,7 +1955,7 @@ function saveTi(){
   B.set("users/"+tiId,{info:o},true).then(()=>{ $("tiSheet").style.display="none"; toast("Saved"); }).catch(netErr);
 }
 function forgotPw(){
-  alert("Forgot your password?\n\nTeacher or Admin: tell the Principal. The Principal blocks your old username in the Staff tab and creates a new one. Then use 'First time here? Request access' with a new password.\n\nPrincipal: please contact the person who set up this app.");
+  alert("Forgot your password?\n\nTeacher or Admin: tell the Principal. The Principal blocks your old username in the Staff tab and creates a new one. Then use 'First time here? Request access' with a new password.\n\nPrincipal: if you forget your password, it can be reset from the Firebase console by the owner of the school app. Please keep your password written in a safe place.");
 }
 /* timetable */
 const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -1919,15 +1966,17 @@ function ttCell(ck,d,p){ const v=(ttAll()[ck]||{})["d"+d+"p"+p]; if(!v) return n
 function ttGrid(cls,edit){
   const ck=xfKey(cls), np=NP();
   let t='<table class="ci"><thead><tr><th></th>'+DAYS.map(d=>"<th>"+d+"</th>").join("")+"</tr></thead><tbody>";
-  for(let p=1;p<=np;p++){ t+="<tr><th>P"+p+"</th>"; for(let d=1;d<=6;d++){ const c=ttCell(ck,d,p); t+="<td"+(edit?' onclick="ttEdit('+d+','+p+')" style="cursor:pointer"':"")+">"+(c?"<b>"+esc(c.s)+"</b><br><small>"+esc(c.n)+"</small>":(edit?"+":""))+"</td>"; } t+="</tr>"; }
+  for(let p=1;p<=np;p++){ t+="<tr><th>P"+p+"</th>"; for(let d=1;d<=6;d++){ const c=ttCell(ck,d,p); t+="<td"+(edit?' onclick="ttEdit('+d+','+p+')" style="cursor:pointer"':"")+">"+(c?"<b>"+esc(c.s)+"</b><br><small>"+esc(c.n)+"</small>":(edit?"+":""))+"</td>"; } t+="</tr>"; if((((S.settings||{}).brk)||[]).includes(p)) t+='<tr><td colspan="7" style="text-align:center;background:var(--gold-l);font-weight:700;color:#7a5a00;font-size:12px;padding:3px">Break</td></tr>'; }
   return t+"</tbody></table>";
 }
 function renderTt(){
   const sel=$("ttCls"), cur=sel.value, cl=classes();
-  sel.innerHTML=cl.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("");
+  sel.innerHTML=cl.map(c=>clOpt(c,cur)).join("");
   if(document.activeElement!==$("ttNp")) $("ttNp").value=NP();
+  if(document.activeElement!==$("ttBrk")) $("ttBrk").value=(((S.settings||{}).brk)||[]).join(", ");
   $("ttGrid").innerHTML=sel.value?ttGrid(sel.value,true):`<div class="empty">Add students first, so classes appear here.</div>`;
 }
+function saveBrk(v){ const a=String(v).split(",").map(x=>+x.trim()).filter(x=>x>0&&x<=12); B.set("config/settings",{brk:a},true).catch(netErr); }
 function saveNp(v){ const n=Math.min(12,Math.max(1,+v||8)); B.set("config/settings",{np:n},true).catch(netErr); }
 function ttEdit(d,p){
   const cls=$("ttCls").value; if(!cls) return; ttCur={d,p};
@@ -1962,6 +2011,8 @@ function renderTtTeacher(){
   if(has) c2.innerHTML=`<h2>${ico("cal")}Timetable - Class ${esc(cl)}</h2><div class="tblw">${ttGrid(cl,false)}</div>`;
 }
 /* class info */
+const cnt=c=>S.students.filter(s=>s.cls===c).length;
+const clOpt=(c,cur)=>`<option value="${esc(c)}" ${c===cur?"selected":""}>${esc(c)} (${cnt(c)} students)</option>`;
 const norm=v=>String(v||"").trim().toLowerCase();
 const xfList=()=>(((S.settings||{}).xf)||[]).slice(0,8);
 const xfKey=l=>norm(l).replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"f";
@@ -1971,7 +2022,7 @@ function ciRows(cls){ return S.students.filter(s=>s.cls===cls).sort(sortStu).map
 function toggleCI(){ $("ciCard").classList.toggle("hide"); renderCI(); }
 function renderCI(){
   const sel=$("ciCls"), cur=sel.value, cl=classes();
-  sel.innerHTML=cl.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("");
+  sel.innerHTML=cl.map(c=>clOpt(c,cur)).join("");
   const rows=sel.value?ciRows(sel.value):[];
   $("ciTbl").innerHTML=rows.length?`<table class="ci"><thead><tr><th>#</th>${ciHead().map(x=>`<th>${esc(x)}</th>`).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td>${r.map(v=>`<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table>`:`<div class="empty">No students in this class.</div>`;
 }
@@ -1986,7 +2037,7 @@ function saveXf(){
   const arr=$("xfIn").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,8);
   const tf=$("tfIn").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,10);
   const pc=$("pcIn").value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,12);
-  B.set("config/settings",{xf:arr,tf:tf,pc:pc},true).then(()=>toast("Saved")).catch(netErr);
+  B.set("config/settings",{xf:arr,tf:tf,pc:pc,mf:$("mfIn").value.trim()},true).then(()=>toast("Saved")).catch(netErr);
 }
 /* sections */
 function secList(){ return (((S.settings||{}).sec)||[]).map(l=>{ const i=String(l).indexOf(":"); return i<0?null:{n:l.slice(0,i).trim(),cl:l.slice(i+1).split(",").map(x=>x.trim()).filter(Boolean)}; }).filter(Boolean); }
@@ -2010,7 +2061,7 @@ function setClasses(id){
 const CATS={school:"School",award:"Award",function:"Function",admission:"Admission"};
 let dPhotoData="", galVis=[], galCat="", admVis=[];
 function shrink(file,max,q){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>{ const im=new Image(); im.onload=()=>{ const k=Math.min(1,max/Math.max(im.width,im.height)), c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k); c.getContext("2d").drawImage(im,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",q)); }; im.onerror=rej; im.src=r.result; }; r.onerror=rej; r.readAsDataURL(file); }); }
-async function pickDir(inp){ if(!inp.files[0]) return; try{ dPhotoData=await shrink(inp.files[0],400,.75); $("dPrev").src=dPhotoData; $("dPrev").classList.remove("hide"); pubDirty=true; }catch(e){ toast("Could not read this photo"); } }
+async function pickDir(inp){ if(!inp.files[0]) return; try{ dPhotoData=await shrink(inp.files[0],640,.8); $("dPrev").src=dPhotoData; $("dPrev").classList.remove("hide"); pubDirty=true; }catch(e){ toast("Could not read this photo"); } }
 async function addPhoto(){
   const f=$("gFile").files[0], cat0=$("gCat").value, cap0=$("gCap").value.trim();
   if(!f&&!(cat0==="admission"&&cap0)) return toast("Choose a photo first");
@@ -2034,72 +2085,170 @@ function renderGal(){
 }
 function zoomImg(id){ const g=galVis.concat(admVis).find(x=>x.id===id); if(!g) return; const z=document.createElement("div"); z.id="zoom"; z.onclick=()=>z.remove(); z.innerHTML=`<img src="${g.img}" alt=""><p>${esc(g.cap||"")}</p>`; document.body.appendChild(z); }
 /* results */
-const resKey=n=>"r_"+n.toLowerCase().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
+const resKey=n=>"r_"+norm(n).replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"");
 const gradeOf=p=>p>=80?"A1":p>=70?"A":p>=60?"B":p>=50?"C":p>=40?"D":p>=33?"E":"F";
-function resCtx(){ const n=$("rExam").value.trim(), tot=+$("rTot").value, cls=$("rCls").value; return {n,tot,cls,key:n?resKey(n):""}; }
-const resOf=(id,key)=>((S.cdoc[id]||{}).res||{})[key];
-function renderRes(){
+const curYear=()=>{ const s=(S.settings||{}).year; if(s) return s; const d=new Date(), a=d.getMonth()>=3?d.getFullYear():d.getFullYear()-1; return a+"-"+String(a+1).slice(2); };
+const exKey=n=>resKey(n)+"_"+curYear().replace(/\W/g,"");
+const passPct=()=>+((S.settings||{}).pass)||33;
+const rkList=()=>{ const r=(S.settings||{}).rk; return r&&r.length?r:["cnic"]; };
+const cleanSub=s=>String(s).replace(/[.~*\/\[\]]/g,"").trim();
+function parseSubs(t){ const o={}; String(t).split(",").forEach(x=>{ const m=/^\s*(.+?)\s+(\d+(?:\.\d+)?)\s*$/.exec(x); if(m&&cleanSub(m[1])) o[cleanSub(m[1])]=+m[2]; }); return o; }
+function calcR(e){ let o=0,t=0; Object.values((e&&e.subs)||{}).forEach(v=>{ if(v&&v.o!=null){ o+=+v.o; t+=+v.t; } }); return {o,t,p:t?Math.round(o/t*1000)/10:0}; }
+let reSub="", reCtx="", mgOpen="", repMode=1;
+function setRepMode(m){ repMode=m; $("pgProg").classList.toggle("hide",m!==1); $("pgRes").classList.toggle("hide",m!==2); $("pgM1").classList.toggle("sec",m!==1); $("pgM2").classList.toggle("sec",m!==2); renderProgTab(); }
+function reCtxNow(){ const n=$("reExam").value.trim(); return {n,cls:$("pgCls").value,key:n?exKey(n):"",subs:parseSubs($("reSubs").value)}; }
+function renderRE(){
   const ae=document.activeElement; if(ae&&ae.dataset&&ae.dataset.d) return;
-  const sel=$("rCls"), cur=sel.value, cl=classes();
-  sel.innerHTML=cl.map(c=>`<option ${c===cur?"selected":""}>${esc(c)}</option>`).join("");
-  const {n,tot,cls,key}=resCtx();
-  if(!n||!(tot>0)||!cls){ $("rList").innerHTML=`<div class="empty">${ico("chart")}Write the exam name and total marks first.</div>`; $("rHint").textContent=""; return; }
+  const {n,cls,key,subs}=reCtxNow();
+  const names=new Set(["Zero Test","Mid Term","Final Term","Monthly Test"]); S.students.forEach(s=>Object.values(s.rs||{}).forEach(e=>{ if(e.n) names.add(e.n); }));
+  $("reExamL").innerHTML=[...names].map(x=>`<option value="${esc(x)}">`).join("");
   const list=S.students.filter(s=>s.cls===cls).sort(sortStu);
-  const pub=S.rpub.find(x=>x.id===key+"_"+resKey(cls));
-  $("rPubBtn").textContent=pub?"Update on visitor page":"Show to visitors"; $("rUnBtn").classList.toggle("hide",!pub);
-  $("rHint").textContent=pub?"Visible to parents on the visitor page (they need the exact student name).":"Enter marks, then send to parents or show on the visitor page.";
-  $("rList").innerHTML=list.map(s=>{
-    const r=resOf(s.id,key), pc=r?Math.round(r.o/tot*1000)/10:null, url=r?waRes(s,r):"";
-    return `<div class="stu">${avatar(s.name)}<div class="info"><div class="nm">${esc(s.name)}</div>
-      <div class="meta">${r?`<span class="tag ${r.sent?"sent":"pend"}">${pc}% &middot; ${gradeOf(pc)}${r.sent?" &middot; sent":""}</span>`:""}</div></div>
-      <input type="number" inputmode="decimal" style="width:76px;flex:none" placeholder="/${tot}" value="${r?r.o:""}" oninput="this.dataset.d=1" onchange="this.dataset.d='';saveMark('${s.id}',this.value)">
-      ${url?`<a class="btn wa sm" href="${url}" target="_blank" rel="noopener" onclick="markResSent('${s.id}')">${ico("wa","sm")}</a>`:""}</div>`;
+  const ctx=key+"|"+cls;
+  if(ctx!==reCtx){ reCtx=ctx; const ex=list.map(s=>(s.rs||{})[key]).find(Boolean); if(ex&&ex.subs) $("reSubs").value=Object.entries(ex.subs).map(([k,v])=>k+" "+v.t).join(", "); else if(!ae||ae.id!=="reSubs") $("reSubs").value=$("reSubs").value; }
+  const sd=parseSubs($("reSubs").value), sn=Object.keys(sd);
+  if(!sn.includes(reSub)) reSub=sn[0]||"";
+  $("reSubChips").innerHTML=sn.map(s=>`<button class="chip ${s===reSub?"on":""}" onclick="reSub='${esc(s)}';renderRE()">${esc(s)} (${sd[s]})</button>`).join("");
+  if(!n||!sn.length){ $("reList").innerHTML=`<div class="empty">Write the exam name and the subjects first.</div>`; $("reHint").textContent=""; return; }
+  $("reList").innerHTML=list.map(s=>{
+    const e=(s.rs||{})[key], v=e&&e.subs&&e.subs[reSub], c=calcR(e);
+    return `<div class="stu">${avatar(s.name)}<div class="info"><div class="nm">${esc(s.name)}</div><div class="meta">${e?`<span class="tag ${c.p>=passPct()?"sent":"bl"}">${c.o}/${c.t} &middot; ${c.p}%</span>`:""}</div></div>
+      <input type="number" inputmode="decimal" style="width:84px;flex:none" placeholder="/${sd[reSub]}" value="${v&&v.o!=null?v.o:""}" oninput="this.dataset.d=1" onchange="this.dataset.d='';saveRM('${s.id}',this.value)" onkeydown="if(event.key==='Enter'){var n=this.closest('.stu').nextElementSibling,i=n&&n.querySelector('input');if(i){i.focus();event.preventDefault();}}"></div>`;
   }).join("")||`<div class="empty">No students in this class.</div>`;
+  const sub=list.some(s=>((s.rs||{})[key]||{}).st==="s");
+  $("reHint").textContent=sub?"This exam was sent to the Principal/Admin. If you change marks, send it again.":"Marks are saved as you type. Press the button when the class is finished.";
 }
-function saveMark(id,v){
-  const {n,tot,key}=resCtx(), s=stuById(id); if(!s||!key) return;
-  if(v===""){ B.set("contacts/"+id,{res:{[key]:DEL}},true).catch(netErr); return; }
+function saveRM(id,v){
+  const {n,key,subs}=reCtxNow(), s=stuById(id); if(!s||!key||!reSub) return;
+  const tot=subs[reSub], e=(s.rs||{})[key];
+  if(v===""){ B.set("students/"+id,{rs:{[key]:{subs:{[reSub]:DEL}}}},true).catch(netErr); return; }
   const o=+v; if(!(o>=0&&o<=tot)) return toast("Marks must be between 0 and "+tot);
-  B.set("contacts/"+id,{res:{[key]:{n,tot,o,t:Date.now()}}},true).catch(netErr);
+  B.set("students/"+id,{rs:{[key]:{n,y:curYear(),subs:{[reSub]:{o,t:tot}},st:e&&e.st?e.st:"d",by:me.id,bn:me.name,ts:Date.now()}}},true).catch(netErr);
 }
-function waRes(s,r){
-  const ph=S.contacts[s.id]; if(!ph) return ""; const pc=Math.round(r.o/r.tot*1000)/10;
-  const t="Assalam o Alaikum. Result - "+r.n+"\n"+s.name+" (Class "+s.cls+")\nMarks: "+r.o+"/"+r.tot+" ("+pc+"%) Grade "+gradeOf(pc)+"\n"+SCHOOL;
-  return "https://wa.me/"+ph+"?text="+encodeURIComponent(t);
+function submitRes(){
+  const {n,cls,key}=reCtxNow(); if(!key) return toast("Write the exam name first");
+  const rows=S.students.filter(s=>cls&&s.cls===cls&&(s.rs||{})[key]); if(!rows.length) return toast("Enter some marks first");
+  Promise.all(rows.map(s=>B.set("students/"+s.id,{rs:{[key]:{st:"s",sat:Date.now(),sby:me.name}}},true))).then(()=>{ toast("Sent to the Principal/Admin"); logAct("sent the "+n+" result of Class "+cls+" to the Principal/Admin"); }).catch(netErr);
 }
-function markResSent(id){ const {key}=resCtx(); if(key) B.set("contacts/"+id,{res:{[key]:{sent:true}}},true).catch(netErr); }
-function sendNextRes(){
-  const {n,tot,cls,key}=resCtx(); if(!key||!(tot>0)) return toast("Write the exam name and total marks");
-  const s=S.students.filter(x=>x.cls===cls).sort(sortStu).find(x=>{ const r=resOf(x.id,key); return r&&!r.sent&&S.contacts[x.id]; });
-  if(!s) return toast("All parents are informed");
-  const url=waRes(s,resOf(s.id,key)); markResSent(s.id); logAct("sent the "+n+" result of "+s.name+" to the parent");
-  const w=window.open(url,"_blank"); if(!w) location.href=url;
+/* result manager (admin/principal) */
+function examsAll(){
+  const m={}; S.students.forEach(s=>Object.entries(s.rs||{}).forEach(([k,e])=>{ const id=k+"|"+s.cls; const x=m[id]=m[id]||{id,key:k,cls:s.cls,n:e.n||k,y:e.y||"",rows:[],st:"d",by:""}; x.rows.push({s,e}); if(e.st==="s"){ x.st="s"; x.by=e.sby||e.bn||x.by; } }));
+  return Object.values(m);
 }
-function unpubRes(){ const {key,cls,n}=resCtx(); if(!key||!confirm("Remove this result from the visitor page?")) return; B.del("results_pub/"+key+"_"+resKey(cls)).then(()=>toast("Removed from visitors")).catch(netErr); logAct("removed the "+n+" result of Class "+cls+" from visitors"); }
-function pubRes(){
-  const {n,tot,cls,key}=resCtx(); if(!key||!(tot>0)) return toast("Write the exam name and total marks");
-  const rows=S.students.filter(s=>s.cls===cls).map(s=>({s,r:resOf(s.id,key)})).filter(x=>x.r).map(x=>({n:x.s.name,o:x.r.o}));
-  if(!rows.length) return toast("Enter some marks first");
-  B.set("results_pub/"+key+"_"+resKey(cls),{title:n,cls,tot,rows,t:Date.now()},false)
-   .then(()=>{ toast("Result is now on the visitor page"); logAct("published the "+n+" result of Class "+cls+" for visitors"); })
-   .catch(()=>toast("Firebase rules need updating. See RULES.txt"));
+const pubId=x=>x.key+"_"+resKey(x.cls);
+function renderRes(){
+  const all=examsAll(), years=[...new Set(all.map(x=>x.y).concat([curYear()]))].sort().reverse();
+  const sel=$("mgYear"), cur=sel.value||curYear();
+  sel.innerHTML=years.map(y=>`<option ${y===cur?"selected":""}>${esc(y)}</option>`).join("");
+  const rk=rkList(); if(document.activeElement.type!=="checkbox"){ $("rkC").checked=rk.includes("cnic"); $("rkN").checked=rk.includes("name"); $("rkG").checked=rk.includes("gr"); $("posOn").checked=!!(S.settings||{}).pos; }
+  if(document.activeElement!==$("passPct")) $("passPct").value=(S.settings||{}).pass||"";
+  const list=all.filter(x=>(x.y||curYear())===sel.value).sort((a,b)=>a.n.localeCompare(b.n)||a.cls.localeCompare(b.cls));
+  $("mgList").innerHTML=list.map(x=>{
+    const pub=S.rpub.find(r=>r.id===pubId(x)), open=mgOpen===x.id;
+    let tbl="";
+    if(open){ const sn=[...new Set(x.rows.flatMap(r=>Object.keys(r.e.subs||{})))];
+      tbl=`<div class="tblw"><table class="ci"><thead><tr><th>Name</th>${sn.map(s=>`<th>${esc(s)}</th>`).join("")}<th>Total</th><th>%</th></tr></thead><tbody>${x.rows.sort((a,b)=>sortStu(a.s,b.s)).map(r=>{ const c=calcR(r.e); return `<tr><td>${esc(r.s.name)}</td>${sn.map(s=>`<td>${r.e.subs&&r.e.subs[s]&&r.e.subs[s].o!=null?r.e.subs[s].o:""}</td>`).join("")}<td>${c.o}/${c.t}</td><td>${c.p}</td></tr>`; }).join("")}</tbody></table></div>`; }
+    return `<div class="mgc"><div style="font-weight:800">${esc(x.n)} &middot; Class ${esc(x.cls)}</div>
+      <div class="meta" style="margin:4px 0"><span class="tag ${x.st==="s"?"sent":"pend"}">${x.st==="s"?"Sent by "+esc(x.by):"Draft"}</span>${pub?`<span class="tag sent">On visitor page</span>`:""}<span class="tag bl">${x.rows.length} students</span></div>
+      <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn sec sm" onclick="mgOpen=${open?"''":"'"+x.id+"'"};renderRes()">${open?"Hide":"View"} marks</button>
+      <button class="btn sm" onclick="pubExam('${x.id}')">${pub?"Update":"Show"} to visitors</button>
+      ${pub?`<button class="btn bad sm" onclick="unpubExam('${x.id}')">Remove from visitors</button>`:""}
+      <button class="btn wa sm" onclick="sendNextExam('${x.id}')">Send to parents</button>
+      <button class="btn bad sm" onclick="delExam('${x.id}')">Delete</button></div>${tbl}</div>`;
+  }).join("")||`<div class="empty">No results yet for ${esc(sel.value)}.</div>`;
+}
+const exById=id=>examsAll().find(x=>x.id===id);
+function saveRsSet(){
+  const rk=[$("rkC").checked&&"cnic",$("rkN").checked&&"name",$("rkG").checked&&"gr"].filter(Boolean); if(!rk.length) return toast("Tick at least one item");
+  B.set("config/settings",{rk,pos:$("posOn").checked,pass:+$("passPct").value||33},true).then(()=>toast("Saved")).catch(netErr);
+}
+function newYear(){
+  const cur=curYear(), a=+cur.slice(0,4), def=(a+1)+"-"+String(a+2).slice(2);
+  const v=prompt("Start a new academic year. All old results and reports stay saved and visible here.\n\nName of the new year:",def); if(!v||!v.trim()) return;
+  B.set("config/settings",{year:v.trim()},true).then(()=>toast("New year started: "+v.trim())).catch(netErr); logAct("started the academic year "+v.trim());
+}
+function resMsg(s,x,e){
+  const c=calcR(e), ok=c.p>=passPct();
+  return "Assalam o Alaikum.\n"+SCHOOL+"\n"+x.n+" ka result\n"+s.name+" (Class "+s.cls+")\n\n"+Object.entries(e.subs||{}).map(([k,v])=>k+": "+v.o+"/"+v.t).join("\n")+"\n\nKul: "+c.o+"/"+c.t+" ("+c.p+"%) Grade "+gradeOf(c.p)+(ok?" - Kamyab":" - Nakam")+(((S.settings||{}).mf)?"\n"+S.settings.mf:"");
+}
+function sendNextExam(id){
+  const x=exById(id); if(!x) return;
+  const r=x.rows.sort((a,b)=>sortStu(a.s,b.s)).find(r=>!r.e.sent&&S.contacts[r.s.id]); if(!r) return toast("All parents are informed");
+  const u="https://wa.me/"+S.contacts[r.s.id]+"?text="+encodeURIComponent(resMsg(r.s,x,r.e));
+  B.set("students/"+r.s.id,{rs:{[x.key]:{sent:true}}},true).catch(netErr); logAct("sent the "+x.n+" result of "+r.s.name+" to the parent");
+  const w=window.open(u,"_blank"); if(!w) location.href=u;
+}
+function delExam(id){
+  const x=exById(id); if(!x||!confirm("Delete the "+x.n+" result of Class "+x.cls+" for ALL its students? This cannot be undone.")) return;
+  Promise.all(x.rows.map(r=>B.set("students/"+r.s.id,{rs:{[x.key]:DEL}},true)).concat([B.del("results_pub/"+pubId(x)).catch(()=>{})])).then(()=>toast("Deleted")).catch(netErr);
+  logAct("deleted the "+x.n+" result of Class "+x.cls);
+}
+function unpubExam(id){ const x=exById(id); if(!x) return; B.del("results_pub/"+pubId(x)).then(()=>toast("Removed from visitors")).catch(netErr); logAct("removed the "+x.n+" result of Class "+x.cls+" from visitors"); }
+/* encryption: a visitor can open a result only with the items the school asked for */
+const normF=(k,v)=>k==="name"?String(v||"").toLowerCase().replace(/\s+/g," ").trim():k==="gr"?String(v||"").toLowerCase().replace(/[^a-z0-9]/g,""):String(v||"").replace(/\D/g,"");
+const matOf=(rk,vals)=>[...rk].sort().map(k=>normF(k,vals[k])).join("|");
+const sha=async s=>{ const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,32); };
+async function aesKey(mat,salt){ const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(mat),"PBKDF2",false,["deriveKey"]); return crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:60000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]); }
+async function encRow(salt,mat,obj){ const iv=crypto.getRandomValues(new Uint8Array(12)), k=await aesKey(mat,salt), ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},k,new TextEncoder().encode(JSON.stringify(obj)))), all=new Uint8Array(12+ct.length); all.set(iv); all.set(ct,12); let s=""; all.forEach(b=>s+=String.fromCharCode(b)); return btoa(s); }
+async function decRow(salt,mat,str){ const a=Uint8Array.from(atob(str),c=>c.charCodeAt(0)), k=await aesKey(mat,salt), pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:a.slice(0,12)},k,a.slice(12)); return JSON.parse(new TextDecoder().decode(pt)); }
+async function pubExam(id){
+  const x=exById(id); if(!x) return; const rk=rkList(), docId=pubId(x), rows=[]; let skip=0;
+  toast("Preparing...");
+  try{
+    for(const r of x.rows){
+      const cd=S.cdoc[r.s.id]||{}, vals={cnic:cd.bform,name:r.s.name,gr:cd.gr};
+      if(rk.some(k=>!normF(k,vals[k]))){ skip++; continue; }
+      const mat=matOf(rk,vals);
+      rows.push({h:await sha(docId+"#"+mat),c:await encRow(docId,mat,{n:r.s.name,c:r.s.cls,subs:r.e.subs||{}})});
+    }
+    if(!rows.length) return toast("No student has the details you chose (B-Form, name or GR No.)");
+    const tot={}; x.rows.forEach(r=>Object.entries(r.e.subs||{}).forEach(([k,v])=>{ tot[k]=v.t; }));
+    const doc={title:x.n,y:x.y||curYear(),cls:x.cls,rk,tot,rows,pass:passPct(),t:Date.now()};
+    if((S.settings||{}).pos){ doc.top=x.rows.map(r=>({n:r.s.name,...calcR(r.e)})).filter(r=>r.t>0).sort((a,b)=>b.p-a.p||b.o-a.o).slice(0,3); }
+    await B.set("results_pub/"+docId,doc,false);
+    toast("On the visitor page"+(skip?" ("+skip+" students skipped: details missing)":"")); logAct("published the "+x.n+" result of Class "+x.cls+" for visitors");
+  }catch(e){ toast("Could not publish. Check Firebase rules."); }
+}
+/* teacher submissions on the home screen */
+function renderInbox(){
+  const box=$("hInbox"); if(!box) return;
+  const ex=examsAll().filter(x=>x.st==="s"&&!S.rpub.some(r=>r.id===pubId(x)));
+  const pr={}; S.students.forEach(s=>{ if(s.prSub&&Date.now()-s.prSub.t<14*864e5){ const o=pr[s.cls]; if(!o||o.t<s.prSub.t) pr[s.cls]=s.prSub; } });
+  const items=ex.map(x=>`<div class="crow"><div class="cn">Result: ${esc(x.n)}</div><div class="cv">Class ${esc(x.cls)} &middot; ${esc(x.by)}</div><button class="btn sec sm" onclick="subTab('res')">Open</button></div>`)
+    .concat(Object.entries(pr).map(([c,v])=>`<div class="crow"><div class="cn">Progress report</div><div class="cv">Class ${esc(c)} &middot; ${esc(v.bn)}</div><button class="btn sec sm" onclick="setTab('prog')">Open</button></div>`));
+  box.classList.toggle("hide",!items.length||!isAdmin());
+  box.innerHTML=items.length?`<h2><svg class="i"><use href="#i-bell"/></svg>Sent by teachers</h2>`+items.join(""):"";
 }
 /* visitor result check */
 let pubList=[];
-function loadPubRes(){
-  try{ let un=null; un=B.listenCol("results_pub",a=>{ pubList=a; if(un) un(); renderPubRes(); },{},()=>{}); }catch(e){}
-}
+function loadPubRes(){ try{ let un=null; un=B.listenCol("results_pub",a=>{ pubList=a; if(un) un(); renderPubRes(); },{},()=>{}); }catch(e){} }
+const RKL={cnic:"B-Form / CNIC",name:"student name",gr:"GR No."};
 function renderPubRes(){
   $("vResCard").classList.toggle("hide",!pubList.length);
-  $("vResSel").innerHTML=pubList.map(x=>`<option value="${esc(x.id)}">${esc(x.title)} - Class ${esc(x.cls)}</option>`).join("");
+  const need=new Set(pubList.flatMap(d=>d.rk||["cnic"]));
+  $("vfC").classList.toggle("hide",!need.has("cnic")); $("vfN").classList.toggle("hide",!need.has("name")); $("vfG").classList.toggle("hide",!need.has("gr"));
+  $("vResNeed").textContent="Type "+[...need].map(k=>RKL[k]).join(" and ")+" of your child.";
+  const tops=pubList.filter(d=>d.top&&d.top.length);
+  $("vTop").classList.toggle("hide",!tops.length);
+  $("vTop").innerHTML=tops.length?`<h2><svg class="i"><use href="#i-star"/></svg>Position holders</h2>`+tops.map(d=>`<div style="margin:10px 0 4px;font-weight:700">${esc(d.title)} &middot; Class ${esc(d.cls)}</div>`+d.top.map((t,i)=>`<div class="rk"><b>${["1st","2nd","3rd"][i]}</b><div style="flex:1">${esc(t.n)}</div><div style="font-weight:700">${t.o}/${t.t} (${t.p}%)</div></div>`).join("")).join(""):"";
 }
-function checkRes(){
-  const d=pubList.find(x=>x.id===$("vResSel").value), nm=$("vResName").value.trim().toLowerCase().replace(/\s+/g," ");
-  if(!d||!nm) return toast("Choose the exam and type the full student name");
-  const r=(d.rows||[]).find(x=>x.n.toLowerCase().replace(/\s+/g," ")===nm);
-  if(!r){ $("vResOut").textContent="No result found. Check the spelling of the name."; return; }
-  const pc=Math.round(r.o/d.tot*1000)/10;
-  $("vResOut").innerHTML="<b>"+esc(r.n)+"</b><br>"+esc(d.title)+": "+r.o+" / "+d.tot+" ("+pc+"%), Grade "+gradeOf(pc);
+async function checkRes(){
+  const vals={cnic:$("vResCnic").value,name:$("vResName").value,gr:$("vResGr").value};
+  if(!Object.values(vals).some(v=>String(v).trim())) return toast("Type the details first");
+  $("vResOut").textContent="Searching...";
+  const found=[];
+  for(const d of pubList){
+    const rk=d.rk||["cnic"]; if(rk.some(k=>!normF(k,vals[k]))) continue;
+    const mat=matOf(rk,vals), h=await sha(d.id+"#"+mat), row=(d.rows||[]).find(r=>r.h===h); if(!row) continue;
+    try{ found.push({d,r:await decRow(d.id,mat,row.c)}); }catch(e){}
+  }
+  if(!found.length){ $("vResOut").innerHTML="<p class=\"hint\">No result found. Check the details and try again.</p>"; return; }
+  found.sort((a,b)=>String(b.d.y).localeCompare(String(a.d.y))||a.d.t-b.d.t);
+  $("vResOut").innerHTML=`<div style="font-weight:800;font-size:16px">${esc(found[0].r.n)} <span class="hint" style="font-weight:500">Class ${esc(found[0].r.c)}</span></div>`+found.map(({d,r})=>{
+    const c=calcR(r), ok=c.p>=(d.pass||33);
+    return `<div class="mgc"><div style="font-weight:700">${esc(d.title)} <span class="hint">${esc(d.y||"")}</span></div>
+      <div class="tblw"><table class="ci"><thead><tr><th>Subject</th><th>Marks</th><th>Out of</th></tr></thead><tbody>${Object.entries(r.subs||{}).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.o}</td><td>${v.t}</td></tr>`).join("")}<tr><td><b>Total</b></td><td><b>${c.o}</b></td><td><b>${c.t}</b></td></tr></tbody></table></div>
+      <div class="meta" style="margin-top:6px"><span class="tag ${ok?"sent":"bl"}">${c.p}% &middot; Grade ${gradeOf(c.p)} &middot; ${ok?"Pass":"Fail"}</span></div></div>`;
+  }).join("");
 }
 /* activity (principal) */
 function renderLog(){
